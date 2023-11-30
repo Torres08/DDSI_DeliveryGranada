@@ -13,8 +13,8 @@ class BaseDatos:
         self.tablas_creadas = False
         self.tablas_borradas = False  # True
         
-        driver = 'ODBC Driver 18 for SQL Server'  # Asegúrate de usar el nombre correcto del driver
-        host = 'oracle0.ugr.es'
+        driver = 'Devart ODBC Driver for Oracle'  # Asegúrate de usar el nombre correcto del driver
+        host = 'oracle0.ugr.es' 
         port = 1521
         database = 'practbd.oracle0.ugr.es'
         user = 'x0596044'
