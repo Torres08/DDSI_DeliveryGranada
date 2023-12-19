@@ -1,0 +1,208 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Granada</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+    <script src="{% static 'js/main.js' %}"></script>
+
+</head>
+<body>
+
+    <nav class="nav">
+        <ul class="list">
+
+            <li class="list_item list_item--click">
+                <div class="list_button ">
+                    <a href="http://127.0.0.1:8000/" class="nav_link">Inicio</a>
+                </div>
+            </li>
+
+            <li class="list_item list_item--click">
+                <div class="list_button list_button--click">    
+                    <img src="">
+                    <a href="#" class="nav_link">Usuarios</a>
+                   <!-- <img src="{% static 'imagenes/arrow.png' %}" class="list_arrow"> -->
+                </div>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Crear Usuario</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Borrar Usuario</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Modificar Usuarios</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="/delivery/templates/listadousuarios.html" class="nav_link--inside">Listar Usuarios</a>
+                </ul>
+
+            </li>
+
+            <li class="list_item list_item--click">
+                <div class="list_button list_button--click">
+                    <img src="">
+                    <a href="#" class="nav_link">Restaurantes</a>
+                </div>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Crear Restaurante</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Borrar Restaurante</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Modificar Restaurante</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Listar Restaurantes</a>
+                </ul>
+
+            </li>
+
+            <li class="list_item list_item--click">
+                <div class="list_button list_button--click">
+                    <img src="">
+                    <a href="#" class="nav_link">Empleados</a>
+                </div>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Crear Empleado</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Borrar Empleado</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Modificar Empleado</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Listar Empleados</a>
+                </ul>
+
+            </li>
+
+            <li class="list_item list_item--click">
+                <div class="list_button list_button--click">
+                    <img src="">
+                    <a href="#" class="nav_link">Pedidos</a>
+                </div>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Crear Pedido</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Borrar Pedido</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Modificar Pedido</a>
+                </ul>
+
+                <ul class="list_show">
+                    <li class="list_inside"></li>
+                    <a href="#" class="nav_link--inside">Listar Pedido</a>
+                </ul>
+
+            </li>
+
+            <li class="list_item list_item--click">
+                <div class="list_button list_button--click">
+                    <img src="">
+                    <a href="#" class="nav_link">Contabilidad</a>
+                </div>
+
+                <ul class="list_show list_item--click">
+                    <li class="list_inside"></li>
+                    <a href="#" class="list_button list_button--clic">Ingresos</a>
+
+                    <ul class="list_show">
+                        <li class="list_inside"></li>
+                        <a href="#" class="nav_link--inside">Crear Ingreso</a>
+                    </ul>
+    
+                    <ul class="list_show">
+                        <li class="list_inside"></li>
+                        <a href="#" class="nav_link--inside">Borrar Ingreso</a>
+                    </ul>
+    
+                    <ul class="list_show">
+                        <li class="list_inside"></li>
+                        <a href="#" class="nav_link--inside">Modificar Ingreso</a>
+                    </ul>
+    
+                    <ul class="list_show">
+                        <li class="list_inside"></li>
+                        <a href="#" class="nav_link--inside">Listar Ingresos</a>
+                    </ul>
+
+
+                </ul>
+
+                <ul class="list_show list_item--click">
+                    <li class="list_inside"></li>
+                    <a href="#" class="list_button list_button--clic">Gastos</a>
+
+                    <ul class="list_show">
+                        <li class="list_inside"></li>
+                        <a href="#" class="nav_link--inside">Crear Gasto</a>
+                    </ul>
+    
+                    <ul class="list_show">
+                        <li class="list_inside"></li>
+                        <a href="#" class="nav_link--inside">Borrar Gasto</a>
+                    </ul>
+    
+                    <ul class="list_show">
+                        <li class="list_inside"></li>
+                        <a href="#" class="nav_link--inside">Modificar Gasto</a>
+                    </ul>
+    
+                    <ul class="list_show">
+                        <li class="list_inside"></li>
+                        <a href="#" class="nav_link--inside">Listar Gastos</a>
+                    </ul>
+
+                </ul>
+
+
+            </li>
+
+
+
+        </ul>
+    </nav>
+
+
+
+</body>
+</html>
+
