@@ -1,3 +1,4 @@
+import random
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.dispatch import receiver
@@ -22,16 +23,20 @@ class Usuario(Cliente):
     def __str__(self):
          return f"{self.id} - {self.Nombre}"
 
+
+class Menu(models.Model):
+    nombre = models.CharField(max_length=100, null=True)
+
+
 class Restaurante(Cliente):
     NRC = models.CharField(max_length=15, unique=True)
     Empleados = models.IntegerField()
     Propietario = models.CharField(max_length=40)
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, default=1)
         
     def __str__(self):
          return f"{self.id} - {self.Nombre}"
-
-class Menu(models.Model):
-    restaurante = models.OneToOneField(Restaurante, on_delete=models.CASCADE)
+     
 
 class Producto(models.Model):
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
@@ -40,6 +45,8 @@ class Producto(models.Model):
         
     def __str__(self):
         return f"{self.nombre} - ${self.precio}"
+
+
 
 # Human Resources
 class Employee(models.Model):
@@ -77,8 +84,11 @@ class Rating(models.Model):
    # def __str__(self):
     #    return self.Nombre_Producto
 
+import random
+import threading
+from django.db import models
+
 class Pedido(models.Model):
-        
     EN_PREPARACION = 'En Preparación'
     EN_ENVIO = 'En Envío'
     ENTREGADO = 'Entregado'
@@ -89,12 +99,30 @@ class Pedido(models.Model):
         (ENTREGADO, 'Entregado'),
     ]
 
+    COORDENADAS_PREESTABLECIDAS = [
+        (40.7128, -74.0060),  # punto 1
+        (34.0522, -118.2437),  # punto 2
+        (41.8781, -87.6298),  # punto 3
+        (37.7749, -122.4194),  # punto 4
+        (51.5074, -0.1278),  # punto 5
+    ]
+
     Estado = models.CharField(max_length=40, choices=ESTADO_CHOICES, default=EN_PREPARACION)
-    productos = models.ManyToManyField(Producto, through='DetallePedido')
+    productos = models.ManyToManyField('Producto', through='DetallePedido')
     precio_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+
+
 
     def __str__(self):
         return f"Pedido {self.id} - Estado: {self.Estado}"
+
+    def cambiar_coordenadas(self):
+        # Seleccionar aleatoriamente una de las coordenadas preestablecidas
+        nueva_coordenada = random.choice(self.COORDENADAS_PREESTABLECIDAS)
+        self.latitud, self.longitud = nueva_coordenada
+        self.save()
 
     def calcular_precio_total(self):
         return sum(detalle.precio_total() for detalle in self.detallepedido_set.all())
@@ -104,13 +132,16 @@ class Pedido(models.Model):
         self.precio_total = self.calcular_precio_total()
         super(Pedido, self).save(*args, **kwargs)
 
+        # Cambiar las coordenadas cada 2 minutos
+        threading.Timer(120, self.cambiar_coordenadas).start()
+
     def cambiar_estado_despues_de_3_minutos(self):
         # Cambiar estado a "En Reparto" después de 3 minutos
-        if self.estado == 'En Preparación':
+        if self.Estado == 'En Preparación':
             threading.Timer(180, self.cambiar_estado_a_en_reparto).start()
 
     def cambiar_estado_a_en_reparto(self):
-        self.estado = 'En Reparto'
+        self.Estado = 'En Reparto'
         self.save()
         # Cambiar estado a "Entregado" después de 5 minutos
         threading.Timer(300, self.cambiar_estado_a_entregado).start()
@@ -118,6 +149,7 @@ class Pedido(models.Model):
     def cambiar_estado_a_entregado(self):
         self.estado = 'Entregado'
         self.save()
+
 
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
