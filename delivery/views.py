@@ -6,3 +6,5 @@ def home(request):
     usuarios = Usuario.objects.all()
     return render(request, "home.html", {"usuarios": usuarios})
 
+def prueba(request):
+    return render(request, 'prueba.html')

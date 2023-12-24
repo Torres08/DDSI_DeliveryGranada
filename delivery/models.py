@@ -113,31 +113,34 @@ class Pedido(models.Model):
         self.estado = 'Entregado'
         self.save()  # Guarda el estado actualizado
 
+
+# relacion entre producto y pedido con info adicional
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1,validators=[MinValueValidator(1), MaxValueValidator(20)])   
     
     class Meta:
-        #unique_together = None
+        #Garantiza que no se pueda repetir el mismo producto en un pedido
         unique_together = ('pedido', 'producto')
      
     def precio_total(self):
         return self.producto.precio * self.cantidad
 
-@receiver(post_save, sender=DetallePedido)
-def recalcular_precio_total_pedido(sender, instance, **kwargs):
-    instance.pedido.precio_total = instance.pedido.calcular_precio_total()
-    instance.pedido.save()
+#@receiver(post_save, sender=DetallePedido)
+#def recalcular_precio_total_pedido(sender, instance, **kwargs):
+#    instance.pedido.precio_total = instance.pedido.calcular_precio_total()
+#    instance.pedido.save()
 
 
 class Encarga(models.Model):
     usuario = models.ForeignKey(Usuario, unique=True, on_delete=models.CASCADE)
     pedido = models.ForeignKey(Pedido, unique=True, on_delete=models.CASCADE)
 
-class Comunica(models.Model):
-    restaurante = models.ForeignKey(Restaurante, unique=True, on_delete=models.CASCADE)
-    pedido = models.ForeignKey(Pedido, unique=True, on_delete=models.CASCADE)
+# comunica no es necesario, ya que el pedido tiene un restaurante
+#class Comunica(models.Model):
+#    restaurante = models.ForeignKey(Restaurante, unique=True, on_delete=models.CASCADE)
+#    pedido = models.ForeignKey(Pedido, unique=True, on_delete=models.CASCADE)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
