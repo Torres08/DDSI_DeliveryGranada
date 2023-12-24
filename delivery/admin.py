@@ -1,11 +1,9 @@
 from django.contrib import admin
 from django import forms
+from django.core.validators import MinValueValidator, MaxValueValidator
 
-# Register your models here.
-from .models import Pedido, Encarga, Cliente, Usuario, Restaurante, Menu, Producto, Employee, Worktime, Rating, Asigna, Ingreso, Gasto, Produce, Emite, Comunica, Schedule, DetallePedido # Importa tu modelo
+from .models import Pedido, Encarga, Cliente, Usuario, Restaurante, Menu, Producto, Employee, Worktime, Rating, Asigna, Ingreso, Gasto, Produce, Emite, Comunica, Schedule, DetallePedido  # Import your models
 
-# admin.site.register(Pedido)
-admin.site.register(DetallePedido)
 admin.site.register(Encarga)
 admin.site.register(Cliente)
 admin.site.register(Usuario)
@@ -21,13 +19,6 @@ admin.site.register(Emite)
 admin.site.register(Comunica)
 admin.site.register(Schedule)
 
-class PedidoAdmin(admin.ModelAdmin):
-    exclude = ['latitud', 'longitud', 'Estado']
-
-admin.site.register(Pedido, PedidoAdmin)
-
-
-
 class ProductoInline(admin.TabularInline):
     model = Producto
     extra = 1
@@ -35,9 +26,25 @@ class ProductoInline(admin.TabularInline):
 class MenuAdmin(admin.ModelAdmin):
     inlines = [ProductoInline]
 
-#admin.site.register(Restaurante)
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Producto)
+
+
+class DetallePedidoForm(forms.ModelForm):
+    class Meta:
+        model = DetallePedido
+        fields = '__all__'
+
+class DetallePedidoInline(admin.TabularInline):
+    model = DetallePedido
+    form = DetallePedidoForm
+    extra = 0  # Puedes ajustar la cantidad de formularios en línea que deseas mostrar
+
+class PedidoAdmin(admin.ModelAdmin):
+    exclude = ['latitud', 'longitud', 'Estado']
+    inlines = [DetallePedidoInline]
+
+admin.site.register(Pedido, PedidoAdmin)
 
 
 
