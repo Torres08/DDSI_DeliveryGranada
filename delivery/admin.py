@@ -28,7 +28,6 @@ class MenuAdmin(admin.ModelAdmin):
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Producto)
 
-
 class DetallePedidoForm(forms.ModelForm):
     class Meta:
         model = DetallePedido

@@ -11,6 +11,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <script src="{% static 'js/main.js' %}"></script>
+
+    <!-- Añadir las funcionalidades necesarias -->
+    <script src="{% static 'js/usuario.js' %}"></script>
 </head>
 <body>
 
@@ -36,15 +39,23 @@
         <div class="content">
 
             <div class="input">
-                <button class="additional-button">Botón Adicional 1</button>
-                <button class="additional-button">Botón Adicional 2</button>
-                <!-- ...  -->
+                <button class="additional-button" onclick="mostrarFormulario()">Crear Cliente</button>
             </div>
-    
+        
             <div class="output">
-                <div class="terminal">
+                <div class="terminal" id="terminal">
                 </div>
             </div>
+        
+            <!-- En home.html -->
+            <div id="formulario-crear-cliente" style="display: none;">
+                <form method="post" action="{% url 'home' %}" id="cliente-form" onsubmit="return crearCliente()">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Guardar Cliente</button>
+                </form>                
+            </div>
+
     
     
         </div>
