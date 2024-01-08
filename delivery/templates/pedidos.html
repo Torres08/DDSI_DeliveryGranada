@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Granada</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
+
+</head>
+<body>
+
+    <!-- Barra de navegación -->
+    
+    <nav class="nav">
+        <ul class="list">
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'home' %}" class="nav_link">Inicio</a>
+                </div>
+            </li>
+        
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
+                </div>
+            </li>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'pedidos' %}" class="nav_link">Pedido</a>
+            </div>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'empleados' %}" class="nav_link">Empleados</a>
+            </div>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'contabilidad' %}" class="nav_link">Contabilidad</a>
+            </div>
+
+        </ul>
+    </nav>
+
+
+        <!-- Contenido -->
+        <div class="content">
+            <div class="content_text">
+                <h1 class="content_title">Pedidos</h1>
+            </div>
+        </div> 
+       
+    
+
+
+</body>
+</html>

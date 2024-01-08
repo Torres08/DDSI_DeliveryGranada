@@ -8,12 +8,14 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
 
+    <!-- Añadir las funcionalidades necesarias -->
+    <script src="{% static 'js/funcionalidad_clientes.js' %}"></script>
 </head>
 <body>
 
-    <!-- Barra de navegación -->
+     <!-- Barra de navegación -->
     
-    <nav class="nav">
+     <nav class="nav">
         <ul class="list">
             <li class="list_item list_item--click">
                 <div class="list_button">
@@ -45,12 +47,30 @@
         </ul>
     </nav>
     
+
+    <!-- Contenido -->
+
         <div class="content">
-            <div class="content_text">
-                <h1 class="content_title">Contabilidad</h1>
+
+            <div class="input">
+                <button class="additional-button" onclick="mostrarFormulario()">Crear Cliente</button>
             </div>
-        </div> 
-       
+
+            <!-- En home.html -->
+            <div id="formulario-crear-cliente" style="display: none;">
+                <form method="post" action="{% url 'clientes' %}" id="cliente-form" onsubmit="return crearCliente()">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Guardar Cliente</button>
+                </form>                
+            </div>
+        
+            <div class="output">
+                <div class="terminal" id="terminal">
+                </div>
+            </div>
+        
+        </div>
     
 
 
