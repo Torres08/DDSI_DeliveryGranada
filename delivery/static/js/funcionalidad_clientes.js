@@ -17,19 +17,23 @@ function crearCliente() {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', form.action, true);
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 // Intenta analizar la respuesta JSON
                 var response = JSON.parse(xhr.responseText);
-                
-                // Mostrar los datos del cliente en la terminal
+
+                // Mostrar mensaje en la terminal
                 var terminal = document.getElementById('terminal');
                 terminal.innerHTML += '<p>Nuevo cliente creado:</p>';
                 terminal.innerHTML += '<p>ID: ' + response.cliente.id + '</p>';
                 terminal.innerHTML += '<p>Nombre: ' + response.cliente.nombre + '</p>';
                 terminal.innerHTML += '<p>Teléfono: ' + response.cliente.telefono + '</p>';
                 terminal.innerHTML += '<p>Dirección: ' + response.cliente.direccion + '</p>';
+
+                // Restablecer el formulario
+                form.reset();
 
                 // Ocultar el formulario después de enviar los datos
                 var formulario = document.getElementById('formulario-crear-cliente');
@@ -43,10 +47,12 @@ function crearCliente() {
             }
         }
     };
+
     xhr.send(data);
 
     return false;
 }
+
 
 
 function mostrarFormularioEliminar() {
@@ -75,6 +81,15 @@ function eliminarCliente() {
                 var terminal = document.getElementById('terminal');
                 terminal.innerHTML += '<p>Se ha borrado el cliente ' + nombreCliente + '</p>';
 
+                // Eliminar la opción del cliente eliminado del select
+                var selectElement = document.getElementById('id_nombre_cliente');
+                var optionToRemove = selectElement.querySelector('option[value="' + nombreCliente + '"]');
+                if (optionToRemove) {
+                    selectElement.removeChild(optionToRemove);
+                }
+
+                // Limpiar el formulario después de eliminar el cliente
+                form.reset();
             } else {
                 console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
 
@@ -88,6 +103,10 @@ function eliminarCliente() {
 
     return false;
 }
+
+
+
+
 
 
 
