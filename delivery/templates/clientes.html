@@ -54,9 +54,9 @@
 
             <div class="input">
                 <button class="additional-button" onclick="mostrarFormulario()">Crear Cliente</button>
+                <button class="additional-button" onclick="mostrarFormularioEliminar()">Eliminar Cliente</button>
             </div>
 
-            <!-- En home.html -->
             <div id="formulario-crear-cliente" style="display: none;">
                 <form method="post" action="{% url 'clientes' %}" id="cliente-form" onsubmit="return crearCliente()">
                     {% csrf_token %}
@@ -64,9 +64,24 @@
                     <button type="submit">Guardar Cliente</button>
                 </form>                
             </div>
-        
+
+            <div id="formulario-eliminar-cliente" style="display: none;">
+                <form method="post" action="{% url 'clientes' %}" id="eliminar-cliente-form" onsubmit="return eliminarCliente()">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="eliminar">
+                    <label for="id_nombre_cliente">Seleccione el Cliente a Eliminar:</label>
+                    <select name="Nombre" id="id_nombre_cliente" required>
+                        {% for cliente in clientes %}
+                            <option value="{{ cliente.Nombre }}">{{ cliente.Nombre }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Eliminar Cliente</button>
+                </form>
+            </div>
+            
             <div class="output">
                 <div class="terminal" id="terminal">
+                    <ul id="lista-clientes"></ul>
                 </div>
             </div>
         

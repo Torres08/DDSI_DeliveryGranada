@@ -6,4 +6,12 @@ class ClienteForm(forms.ModelForm):
         model = Cliente
         fields = ['Nombre', 'Telefono', 'Direccion']
 
+class EliminaClienteForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ['Nombre']  
+
+
+
+
 

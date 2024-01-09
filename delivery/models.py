@@ -19,6 +19,10 @@ class Cliente(models.Model):
 
     def __str__(self):
         return f"{self.id} - {self.Nombre}"
+    
+    def eliminar_cliente(self):
+        # Método para eliminar el cliente
+        self.delete()
 
 class Usuario(Cliente):
     DNI = models.CharField(max_length=20, unique=True)

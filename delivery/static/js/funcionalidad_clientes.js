@@ -12,16 +12,17 @@ function crearCliente() {
     var form = document.getElementById('cliente-form');
     var data = new FormData(form);
 
-    // Enviar el formulario de manera asíncrona con AJAX
+    data.append('accion', 'crear');
+
     var xhr = new XMLHttpRequest();
     xhr.open('POST', form.action, true);
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                // Parsear la respuesta JSON
+                // Intenta analizar la respuesta JSON
                 var response = JSON.parse(xhr.responseText);
-
+                
                 // Mostrar los datos del cliente en la terminal
                 var terminal = document.getElementById('terminal');
                 terminal.innerHTML += '<p>Nuevo cliente creado:</p>';
@@ -34,16 +35,72 @@ function crearCliente() {
                 var formulario = document.getElementById('formulario-crear-cliente');
                 formulario.style.display = 'none';
             } else {
-                // Manejar errores si la solicitud no fue exitosa
                 console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
+
+                // Muestra el mensaje de error en la consola
+                var terminal = document.getElementById('terminal');
+                terminal.innerHTML += '<p>Error en la solicitud AJAX: ' + xhr.statusText + '</p>';
             }
         }
     };
     xhr.send(data);
 
-    // Evitar que el formulario se envíe de forma tradicional
     return false;
 }
+
+
+function mostrarFormularioEliminar() {
+    var formulario = document.getElementById('formulario-eliminar-cliente');
+    formulario.style.display = 'block';
+}
+
+// Función para eliminar un cliente
+function eliminarCliente() {
+    var form = document.getElementById('eliminar-cliente-form');
+    var data = new URLSearchParams(new FormData(form));
+
+    data.append('accion', 'eliminar');
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', form.action, true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                // Intenta analizar la respuesta JSON
+                var response = JSON.parse(xhr.responseText);
+
+                // Mostrar el mensaje en la terminal
+                var nombreCliente = document.getElementById('id_nombre_cliente').value;
+                var terminal = document.getElementById('terminal');
+                terminal.innerHTML += '<p>Se ha borrado el cliente ' + nombreCliente + '</p>';
+
+            } else {
+                console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
+
+                // Muestra el mensaje de error en la consola
+                var terminal = document.getElementById('terminal');
+                terminal.innerHTML += '<p>Error en la solicitud AJAX: ' + xhr.statusText + '</p>';
+            }
+        }
+    };
+    xhr.send(data);
+
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
