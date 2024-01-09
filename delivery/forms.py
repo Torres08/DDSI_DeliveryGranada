@@ -11,6 +11,13 @@ class EliminaClienteForm(forms.ModelForm):
         model = Cliente
         fields = ['Nombre']  
 
+class ModificarClienteForm(forms.Form):
+    Nombre = forms.CharField(max_length=255)
+    NuevoNombre = forms.CharField(max_length=255)
+    NuevoTelefono = forms.CharField(max_length=9)
+    NuevaDireccion = forms.CharField(max_length=255)
+
+
 
 
 

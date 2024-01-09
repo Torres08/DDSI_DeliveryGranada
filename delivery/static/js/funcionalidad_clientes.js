@@ -88,6 +88,7 @@ function eliminarCliente() {
                     selectElement.removeChild(optionToRemove);
                 }
 
+
                 // Limpiar el formulario después de eliminar el cliente
                 form.reset();
             } else {
@@ -103,6 +104,82 @@ function eliminarCliente() {
 
     return false;
 }
+
+
+function mostrarFormularioModificar() {
+    var formularioModificar = document.getElementById('formulario-modificar-cliente');
+    formularioModificar.style.display = 'block';
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+function modificarCliente() {
+    var form = document.getElementById('modificar-cliente-form');
+    var nombreCliente = document.getElementById('id_nombre_cliente_modificar').value;
+    var nuevoNombre = document.getElementById('id_nuevo_nombre').value;
+    var nuevoTelefono = document.getElementById('id_nuevo_telefono').value;
+    var nuevaDireccion = document.getElementById('id_nueva_direccion').value;
+
+    var data = new FormData();
+    data.append('accion', 'modificar');
+    data.append('Nombre', nombreCliente);
+    data.append('NuevoNombre', nuevoNombre);
+    data.append('NuevoTelefono', nuevoTelefono);
+    data.append('NuevaDireccion', nuevaDireccion);
+
+
+    var csrftoken = getCookie('csrftoken');  // Asegúrate de tener una función para obtener el valor del token CSRF
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('POST', form.action, true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.setRequestHeader('X-CSRFToken', csrftoken);  // Agrega el token CSRF a la solicitud
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                // Intenta analizar la respuesta JSON
+                var response = JSON.parse(xhr.responseText);
+
+                // Mostrar el mensaje en la terminal
+                var terminal = document.getElementById('terminal');
+                terminal.innerHTML += '<p>Cliente modificado: ' + nombreCliente + '</p>';
+            } else {
+                console.error('Error en la solicitud AJAX:', xhr.status, xhr.statusText);
+
+                // Muestra el mensaje de error en la consola
+                var terminal = document.getElementById('terminal');
+                terminal.innerHTML += '<p>Error en la solicitud AJAX: ' + xhr.statusText + '</p>';
+            }
+        }
+    };
+    xhr.send(data);
+
+    return false;
+}
+
+
+
+
+
+
+
+
+
 
 
 
