@@ -34,6 +34,18 @@ class DetallePedidoForm(forms.ModelForm):
         model = DetallePedido
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        # Llamamos al método __init__ del formulario base
+        super().__init__(*args, **kwargs)
+
+        # Obtener la instancia del pedido si existe
+        pedido_instance = kwargs.get('instance', None)
+
+        # Filtrar los productos por el restaurante del pedido
+        if pedido_instance and pedido_instance.pk:
+            restaurante = pedido_instance.restaurante
+            self.fields['producto'].queryset = self.fields['producto'].queryset.filter(menu__restaurante=restaurante)
+
 class DetallePedidoInline(admin.TabularInline):
     model = DetallePedido
     form = DetallePedidoForm

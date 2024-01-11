@@ -85,8 +85,10 @@ class Pedido(models.Model):
         return f"Pedido {self.id} - Estado: {self.estado}"
 
     def calcular_precio_total(self):
-        return sum(detalle.precio_total() for detalle in self.detallepedido_set.all())
-
+        detalles = self.detallepedido_set.all()
+        print (sum(detalle.producto.precio * detalle.cantidad for detalle in detalles))
+        return  sum(detalle.producto.precio * detalle.cantidad for detalle in detalles)
+        
     def save(self, *args, **kwargs):
         # Calcular el precio total antes de guardar el pedido
         self.precio_total = self.calcular_precio_total()
