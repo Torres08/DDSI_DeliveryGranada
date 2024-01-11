@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Granada</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pedidos/pedidos.css' %}">
+
+    <script src="{% static 'js/funcionalidad_clientes.js' %}"></script>
+
+</head>
+<body>
+
+    <!-- Barra de navegación -->
+    
+    <nav class="nav">
+        <ul class="list">
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'home' %}" class="nav_link">Inicio</a>
+                </div>
+            </li>
+        
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
+                </div>
+            </li>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'pedidos' %}" class="nav_link">Pedido</a>
+            </div>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'empleados' %}" class="nav_link">Empleados</a>
+            </div>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'contabilidad' %}" class="nav_link">Contabilidad</a>
+            </div>
+
+        </ul>
+    </nav>
+       
+    
+    <!-- Contenido -->
+
+    <div class="content">
+
+        <div class="input">
+            <a href="{% url 'crear_pedidos' %}" class="additional-button">Crear Pedido</a>
+            <a href="{% url 'modificar_pedidos' %}" class="additional-button">Modificar Pedido</a>
+            <a href="{% url 'eliminar_pedidos' %}" class="additional-button">Eliminar Pedido</a>
+            <a href="{% url 'pedidos' %}" class="additional-button">Listar Pedido</a>
+        </div>
+
+        <div id="formulario-crear-cliente" style="display: none;">
+            <form method="post" action="{% url 'clientes' %}" id="cliente-form" onsubmit="return crearCliente()">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Guardar Cliente</button>
+            </form>                
+        </div>
+
+        <div id="formulario-eliminar-cliente" style="display: none;">
+            <form method="post" action="{% url 'clientes' %}" id="eliminar-cliente-form" onsubmit="return eliminarCliente()">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="eliminar">
+                <label for="id_nombre_cliente">Seleccione el Cliente a Eliminar:</label>
+                <select name="Nombre" id="id_nombre_cliente" required>
+                    {% for cliente in clientes %}
+                        <option value="{{ cliente.Nombre }}">{{ cliente.Nombre }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Eliminar Cliente</button>
+            </form>
+        </div>
+
+        <div id="formulario-modificar-cliente" style="display: none;">
+            <form method="post" action="{% url 'clientes' %}" id="modificar-cliente-form" onsubmit="return modificarCliente()">
+                {% csrf_token %}
+                <input type="hidden" name="accion" value="modificar">
+                <label for="id_nombre_cliente_modificar">Seleccione el Cliente a Modificar:</label>
+                <select name="Nombre" id="id_nombre_cliente_modificar" required>
+                    {% for cliente in clientes %}
+                        <option value="{{ cliente.Nombre }}">{{ cliente.Nombre }}</option>
+                    {% endfor %}
+                </select>
+                <label for="id_nuevo_nombre">Nuevo Nombre:</label>
+                <input type="text" name="NuevoNombre" id="id_nuevo_nombre" required>
+                <label for="id_nuevo_telefono">Nuevo Teléfono:</label>
+                <input type="text" name="NuevoTelefono" id="id_nuevo_telefono" required>
+                <label for="id_nueva_direccion">Nueva Dirección:</label>
+                <input type="text" name="NuevaDireccion" id="id_nueva_direccion" required>
+                <button type="submit">Modificar Cliente</button>
+            </form>
+        </div>
+        
+        
+        <div class="output">
+            <div class="terminal" id="terminal">
+            </div>
+        </div>
+        
+
+    </div>
+
+    <div id="lista-clientes">
+        <ul>
+            {% for cliente in lista_clientes %}
+                <li>
+                    <p>ID: {{ cliente.id }}</p>
+                    <p>Nombre: {{ cliente.Nombre }}</p>
+                    <p>Teléfono: {{ cliente.telefono }}</p>
+                    <p>Dirección: {{ cliente.direccion }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+
+
+
+</body>
+</html>

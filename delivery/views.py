@@ -88,7 +88,16 @@ def clientes(request):
 
 
 def pedidos(request):
-    return render(request, 'pedidos.html')
+    return render(request, 'pedidos/pedidos.html')
+
+def crear_pedido(request):
+    return render(request, 'pedidos/crearpedidos.html')
+
+def eliminar_pedido(request):
+    return render(request, 'pedidos/eliminarpedidos.html')
+
+def modificar_pedido(request):
+    return render(request, 'pedidos/modificarpedidos.html')
 
 def empleados(request):
     return render(request, 'empleados.html')

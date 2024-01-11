@@ -18,37 +18,45 @@
 
     <!-- Barra de navegación -->
     
-        <nav class="nav">
-            <ul class="list">
-                <li class="list_item list_item--click">
-                    <div class="list_button">
-                        <a href="{% url 'home' %}" class="nav_link">Inicio</a>
-                    </div>
-                </li>
-            
-                <li class="list_item list_item--click">
-                    <div class="list_button">
-                        <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
-                    </div>
-                </li>
-
-                <li class="list_item list_item--click">
-                    <div class="list_button">
-                        <a href="{% url 'pedidos' %}" class="nav_link">Pedido</a>
+    <nav class="nav">
+        <ul class="list">
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
-
-                <li class="list_item list_item--click">
-                    <div class="list_button">
-                        <a href="{% url 'empleados' %}" class="nav_link">Empleados</a>
+            </li>
+        
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
                 </div>
-
-                <li class="list_item list_item--click">
-                    <div class="list_button">
-                        <a href="{% url 'contabilidad' %}" class="nav_link">Contabilidad</a>
+            </li>
+    
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'pedidos' %}" class="nav_link">Pedido</a>
                 </div>
-
-            </ul>
-        </nav>
+            </li>
+    
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'empleados' %}" class="nav_link">Empleados</a>
+                </div>
+            </li>
+    
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'contabilidad' %}" class="nav_link">Contabilidad</a>
+                </div>
+            </li>
+    
+            <li class="list_item list_item--app-name">
+                <div class="list_button list_button--app-name">
+                    <p class="app_name">Delivery Granada</p>
+                </div>
+            </li>
+        </ul>
+    </nav>
     
 
         <div class="content">

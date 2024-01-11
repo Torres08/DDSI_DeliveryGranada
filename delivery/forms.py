@@ -16,9 +16,3 @@ class ModificarClienteForm(forms.Form):
     NuevoNombre = forms.CharField(max_length=255)
     NuevoTelefono = forms.CharField(max_length=9)
     NuevaDireccion = forms.CharField(max_length=255)
-
-
-
-
-
-

@@ -30,27 +30,26 @@ class Usuario(Cliente):
     def __str__(self):
         return f"{self.id} - {self.Nombre}"
 
-class Menu(models.Model):
-    nombre = models.CharField(max_length=100, null=True)
-
-
 class Restaurante(Cliente):
     NRC = models.CharField(max_length=15, unique=True)
     Empleados = models.IntegerField()
     Propietario = models.CharField(max_length=40)
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return f"Restaurante {self.id} - {self.Nombre}"
 
+class Menu(models.Model):
+    restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, null=True, related_name='menus')
+    productos = models.ManyToManyField('Producto', related_name='menus')
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Subsitema 2: Logistica
 # definido: Producto, Pedido, encarga, comunica, asigna
 class Producto(models.Model):
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=255)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(null=True)
+    precio = models.DecimalField(max_digits=8, decimal_places=2)
 
     def __str__(self):
         return f"{self.nombre} - ${self.precio}"
@@ -74,50 +73,39 @@ class Pedido(models.Model):
         (51.5074, -0.1278),  # punto 5
     ]
 
-    Estado = models.CharField(max_length=40, choices=ESTADO_CHOICES, default=EN_PREPARACION)
-    productos = models.ManyToManyField('Producto', through='DetallePedido')
+    estado = models.CharField(max_length=40, choices=ESTADO_CHOICES, default=EN_PREPARACION)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
     precio_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, default=1)  # Restaurante al que pertenece el pedido
+    restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, default=1)
+    productos = models.ManyToManyField('Producto', through='DetallePedido', limit_choices_to={'menu__restaurante': Restaurante})
 
     def __str__(self):
-        return f"Pedido {self.id} - Estado: {self.Estado}"
+        return f"Pedido {self.id} - Estado: {self.estado}"
 
     def calcular_precio_total(self):
         return sum(detalle.precio_total() for detalle in self.detallepedido_set.all())
+
+    def save(self, *args, **kwargs):
+        # Calcular el precio total antes de guardar el pedido
+        self.precio_total = self.calcular_precio_total()
+
+        # Establecer la fecha de creación solo si no está establecida previamente
+        if not self.fecha_creacion:
+            self.fecha_creacion = timezone.now()
+
+        # Guardar el pedido con el precio total actualizado y la fecha de creación
+        super(Pedido, self).save(*args, **kwargs)
+
+        # Cambiar las coordenadas cada 2 minutos
+        threading.Timer(120, self.cambiar_coordenadas).start()
 
     def cambiar_coordenadas(self):
         # Seleccionar aleatoriamente una de las coordenadas preestablecidas
         nueva_coordenada = random.choice(self.COORDENADAS_PREESTABLECIDAS)
         self.latitud, self.longitud = nueva_coordenada
-
-    def save(self, *args, **kwargs):
-        # Guardar el pedido antes de realizar otras operaciones
-        super(Pedido, self).save(*args, **kwargs)
-
-        # Calcular el precio total después de guardar el pedido
-        self.precio_total = self.calcular_precio_total()
-
-        # Cambiar las coordenadas cada 2 minutos
-        threading.Timer(120, self.cambiar_coordenadas).start()
-
-    def cambiar_estado_despues_de_3_minutos(self):
-        # Cambiar estado a "En Reparto" después de 3 minutos
-        if self.Estado == 'En Preparación':
-            threading.Timer(180, self.cambiar_estado_a_en_reparto).start()
-
-    def cambiar_estado_a_en_reparto(self):
-        self.Estado = 'En Reparto'
-        self.save()  # Guarda el estado actualizado
-        # Cambiar estado a "Entregado" después de 5 minutos
-        threading.Timer(300, self.cambiar_estado_a_entregado).start()
-
-    def cambiar_estado_a_entregado(self):
-        self.estado = 'Entregado'
-        self.save()  # Guarda el estado actualizado
-
-
+    
 # relacion entre producto y pedido con info adicional
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)

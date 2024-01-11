@@ -1,0 +1,27 @@
+<!-- detalle_menu.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ menu.nombre }}</title>
+</head>
+<body>
+
+    <h1>{{ menu.nombre }}</h1>
+    <p>{{ menu.descripcion }}</p>
+
+    <h2>Productos en el Menú:</h2>
+    <ul>
+        {% for producto in productos %}
+            <li>
+                <strong>{{ producto.nombre }}</strong>
+                <p>{{ producto.descripcion }}</p>
+                <p>Precio: ${{ producto.precio }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
