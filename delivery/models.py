@@ -18,7 +18,7 @@ class Cliente(models.Model):
     Direccion = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"{self.id} - {self.Nombre}"
+        return f"Cliente: {self.Nombre} - {self.id}"
     
     def eliminar_cliente(self):
         # Método para eliminar el cliente
@@ -28,7 +28,7 @@ class Usuario(Cliente):
     DNI = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
-        return f"{self.id} - {self.Nombre}"
+        return f"Usuario: {self.Nombre} - {self.id}"
 
 class Restaurante(Cliente):
     NRC = models.CharField(max_length=15, unique=True)
@@ -36,10 +36,21 @@ class Restaurante(Cliente):
     Propietario = models.CharField(max_length=40)
 
     def __str__(self):
-        return f"Restaurante {self.id} - {self.Nombre}"
+        return f"Restaurante {self.Nombre} - {self.id}"
 
 class Menu(models.Model):
     restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, null=True, related_name='menus')
+    
+    @property
+    def menu_name(self):
+        if self.restaurante:
+            return f"Menu {self.restaurante.Nombre}"
+        else:
+            return "Menu (No Restaurant)"
+
+    def __str__(self):
+        return self.menu_name
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Subsitema 4: Contabilidad
@@ -47,10 +58,14 @@ class Menu(models.Model):
 class Ingreso(models.Model):
     Importe = models.IntegerField()
     Fecha = models.DateTimeField()
+    comentario = models.TextField(blank=True, null=True)  
+
 
 class Gasto(models.Model):
     Importe = models.IntegerField()
     Fecha = models.DateTimeField()
+    comentario = models.TextField(blank=True, null=True)  
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Human Resources
@@ -61,12 +76,32 @@ class Rating(models.Model):
     comentario = models.TextField(blank=True, null=True)  
     empleado = models.ForeignKey('Employee', related_name='ratings',null=True, on_delete=models.CASCADE)
     
+    @property
+    def menu_name(self):
+        if self.empleado:
+            return f"Rating Empleado: {self.empleado.Nombre}"
+        else:
+            return "Rating Empleado: (No Employee selected)"
 
+    def __str__(self):
+        return self.menu_name
+    
 class Worktime(models.Model):
     efficiency = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     employee = models.ForeignKey('Employee', related_name='worktimes', null=True, on_delete=models.CASCADE)
+    
+    @property
+    def menu_name(self):
+        if self.employee:
+            return f"Worktime Empleado: {self.employee.Nombre}"
+        else:
+            return "Worktime Empleado: (No Employee selected)"
+
+    def __str__(self):
+        return self.menu_name
+
     
 class Employee(models.Model):
     Nombre = models.CharField(max_length=30, unique=True)
@@ -76,6 +111,9 @@ class Employee(models.Model):
     IBAN = models.CharField(max_length=25)
     Mail = models.CharField(max_length=30)
     #Hire_date = models.DateField()
+    
+    def __str__(self):
+        return f"{self.Nombre} - ID:{self.pk}"
     
     # un empleado tiene un worktime, un schedule y un rating   
     gasto = models.OneToOneField(Gasto, null=True, on_delete=models.CASCADE)
@@ -114,11 +152,11 @@ class Pedido(models.Model):
     ]
 
     COORDENADAS_PREESTABLECIDAS = [  # pasarlo a una API si eso
-        (40.7128, -74.0060),  # punto 1
-        (34.0522, -118.2437),  # punto 2
-        (41.8781, -87.6298),  # punto 3
-        (37.7749, -122.4194),  # punto 4
-        (51.5074, -0.1278),  # punto 5
+        (40.7128, -74.0060),  
+        (34.0522, -118.2437),  
+        (41.8781, -87.6298),  
+        (37.7749, -122.4194),  
+        (51.5074, -0.1278),  
     ]
 
     estado = models.CharField(max_length=40, choices=ESTADO_CHOICES, default=EN_PREPARACION)
