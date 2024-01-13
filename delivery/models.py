@@ -66,6 +66,7 @@ class Worktime(models.Model):
     efficiency = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
+    employee = models.ForeignKey('Employee', related_name='worktimes', null=True, on_delete=models.CASCADE)
     
 class Employee(models.Model):
     Nombre = models.CharField(max_length=30, unique=True)
@@ -76,14 +77,17 @@ class Employee(models.Model):
     Mail = models.CharField(max_length=30)
     #Hire_date = models.DateField()
     
-    # un empleado tiene un worktime, un schedule y un rating
-    worktime = models.OneToOneField(Worktime,null=True, on_delete=models.CASCADE)
+    # un empleado tiene un worktime, un schedule y un rating   
     gasto = models.OneToOneField(Gasto, null=True, on_delete=models.CASCADE)
     
      # añadir varios ratings a un empleado
     def add_rating(self, rating_value, comentario=None):
         rating = Rating.objects.create(empleado=self, rating=rating_value, comentario=comentario)
         return rating
+    
+    def add_worktime(self, efficiency, start_date, end_date):
+        worktime = Worktime.objects.create(employee=self, efficiency=efficiency, start_date=start_date, end_date=end_date)
+        return worktime
 
 
 # ----------------------------------------------------------------------------------------------------------------------

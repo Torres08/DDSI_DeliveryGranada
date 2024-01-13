@@ -70,10 +70,31 @@ class RatingInline(admin.TabularInline):
     form = RatingForm
     extra = 1
 
+class WorktimeForm(forms.ModelForm):
+    class Meta:
+        model = Worktime
+        fields = '__all__'
+
+    def clean_efficiency(self):
+        efficiency = self.cleaned_data['efficiency']
+        if not (0 <= efficiency <= 5):
+            raise forms.ValidationError('La eficiencia debe estar entre 0 y 5.')
+        return efficiency
+
+class WorktimeInline(admin.TabularInline):
+    model = Worktime
+    form = WorktimeForm
+    extra = 1
+
 class EmployeeAdmin(admin.ModelAdmin):
-    inlines = [RatingInline]
+    inlines = [RatingInline, WorktimeInline]
 
 admin.site.register(Employee, EmployeeAdmin)
+
+
+# añadir varios worktine a empleado
+
+
 
 
 
