@@ -56,22 +56,17 @@ class Gasto(models.Model):
 # Human Resources
 # definido: Employee, Worktime, Schedule, Rating
 
-class Worktime(models.Model):
-    worktime = models.DecimalField(max_digits=10, decimal_places=2)
-    efficiency = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
-    #deliveries = models.ManyToManyField(Pedido)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-
-class Schedule(models.Model):
-    worktime = models.OneToOneField(Worktime, null=True, on_delete=models.CASCADE)
-    #empleado = models.OneToOneField(Employee, null=True, on_delete=models.CASCADE)
-
 class Rating(models.Model):
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comentario = models.TextField(blank=True, null=True)  
-    #empleado = models.OneToOneField(Employee, null=True, on_delete=models.CASCADE)
+    empleado = models.ForeignKey('Employee', related_name='ratings',null=True, on_delete=models.CASCADE)
+    
 
+class Worktime(models.Model):
+    efficiency = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    
 class Employee(models.Model):
     Nombre = models.CharField(max_length=30, unique=True)
     Direccion = models.CharField(max_length=255)
@@ -79,13 +74,17 @@ class Employee(models.Model):
     Salario = models.DecimalField(max_digits=10, decimal_places=2)
     IBAN = models.CharField(max_length=25)
     Mail = models.CharField(max_length=30)
-    Hire_date = models.DateField()
+    #Hire_date = models.DateField()
     
     # un empleado tiene un worktime, un schedule y un rating
-    worktime = models.OneToOneField(Worktime, null=True, on_delete=models.CASCADE)
-    #schedule = models.OneToOneField(Schedule, null=True, on_delete=models.CASCADE)
-    rating = models.OneToOneField(Rating, null=True, on_delete=models.CASCADE)
+    worktime = models.OneToOneField(Worktime,null=True, on_delete=models.CASCADE)
     gasto = models.OneToOneField(Gasto, null=True, on_delete=models.CASCADE)
+    
+     # añadir varios ratings a un empleado
+    def add_rating(self, rating_value, comentario=None):
+        rating = Rating.objects.create(empleado=self, rating=rating_value, comentario=comentario)
+        return rating
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Subsitema 2: Logistica
@@ -126,9 +125,9 @@ class Pedido(models.Model):
     restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, default=1)
     productos = models.ManyToManyField('Producto', through='DetallePedido', limit_choices_to={'menu__restaurante': Restaurante})
     
-    gasto_generado = models.OneToOneField(Gasto, null=True, blank=True, on_delete=models.SET_NULL, related_name='pedido_generador')
+    gasto_generado = models.OneToOneField(Gasto, null=True, blank=True, on_delete=models.SET_NULL, related_name='pedidos_asignados')
     empleado_asignado = models.ForeignKey(Employee, null=True, blank=True, on_delete=models.SET_NULL, related_name='pedidos_asignados')
-    
+    usuario_asignado = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='pedidos_asignados')
 
     def __str__(self):
         return f"Pedido {self.id} - Estado: {self.estado}"
@@ -170,35 +169,15 @@ class DetallePedido(models.Model):
     def precio_total(self):
         return self.producto.precio * self.cantidad
 
-#@receiver(post_save, sender=DetallePedido)
-#def recalcular_precio_total_pedido(sender, instance, **kwargs):
-#    instance.pedido.precio_total = instance.pedido.calcular_precio_total()
-#    instance.pedido.save()
-
-
-class Encarga(models.Model):
-    usuario = models.ForeignKey(Usuario, unique=True, on_delete=models.CASCADE)
-    pedido = models.ForeignKey(Pedido, unique=True, on_delete=models.CASCADE)
-
-# comunica no es necesario, ya que el pedido tiene un restaurante
-#class Comunica(models.Model):
-#    restaurante = models.ForeignKey(Restaurante, unique=True, on_delete=models.CASCADE)
-#    pedido = models.ForeignKey(Pedido, unique=True, on_delete=models.CASCADE)
-
-#class Emite(models.Model):
-    # pedido = models.ForeignKey(Pedido, unique=True, null=True, on_delete=models.CASCADE)
-    # ingreso = models.ForeignKey(Ingreso, unique=True, on_delete=models.CASCADE)
 
 
 
-#  no los necesitamos   
-# class Asigna(models.Model):
-#     pedido = models.ForeignKey(Pedido, unique=True, on_delete=models.CASCADE)
-#    empleado = models.ForeignKey(Employee, unique=True, on_delete=models.CASCADE)
 
-# class Produce(models.Model):
-#    empleado = models.ForeignKey(Employee, unique=True, on_delete=models.CASCADE)
-#    gasto = models.ForeignKey(Gasto, unique=True, on_delete=models.CASCADE)
+
+
+
+
+
 
 
 

@@ -2,21 +2,17 @@ from django.contrib import admin
 from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from .models import Pedido, Encarga, Cliente, Usuario, Restaurante, Menu, Producto, Employee, Worktime, Rating, Ingreso, Gasto, Schedule, DetallePedido  # Import your models
+from .models import Pedido, Cliente, Usuario, Restaurante, Menu, Producto, Employee, Worktime, Rating, Ingreso, Gasto, DetallePedido  # Import your models
 
-admin.site.register(Encarga)
 admin.site.register(Cliente)
 admin.site.register(Usuario)
 admin.site.register(Restaurante)
-admin.site.register(Employee)
+#admin.site.register(Employee)
 admin.site.register(Worktime)
 admin.site.register(Rating)
-#admin.site.register(Asigna)
 admin.site.register(Ingreso)
 admin.site.register(Gasto)
-#admin.site.register(Produce)
-#admin.site.register(Emite)
-admin.site.register(Schedule)
+
 
 class ProductoInline(admin.TabularInline):
     model = Producto
@@ -27,7 +23,6 @@ class MenuAdmin(admin.ModelAdmin):
 
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Producto)
-
 
 class DetallePedidoForm(forms.ModelForm):
     class Meta:
@@ -58,6 +53,27 @@ class PedidoAdmin(admin.ModelAdmin):
 admin.site.register(Pedido, PedidoAdmin)
 
 
+# añadir varios rating a empleado
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = '__all__'
+
+    def clean_rating(self):
+        rating = self.cleaned_data['rating']
+        if not (1 <= rating <= 5):
+            raise forms.ValidationError('El rating debe estar entre 1 y 5.')
+        return rating
+
+class RatingInline(admin.TabularInline):
+    model = Rating
+    form = RatingForm
+    extra = 1
+
+class EmployeeAdmin(admin.ModelAdmin):
+    inlines = [RatingInline]
+
+admin.site.register(Employee, EmployeeAdmin)
 
 
 
