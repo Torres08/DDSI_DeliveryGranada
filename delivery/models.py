@@ -18,17 +18,18 @@ class Cliente(models.Model):
     Direccion = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"Cliente: {self.Nombre} - {self.id}"
+        return f"{self.id} - {self.Nombre}"
     
     def eliminar_cliente(self):
         # Método para eliminar el cliente
         self.delete()
 
 class Usuario(Cliente):
+    Apellidos = models.CharField(max_length=255, null=True)
     DNI = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
-        return f"Usuario: {self.Nombre} - {self.id}"
+        return f"{self.id} - {self.Nombre} {self.Apellidos}"
 
 class Restaurante(Cliente):
     NRC = models.CharField(max_length=15, unique=True)
@@ -36,97 +37,11 @@ class Restaurante(Cliente):
     Propietario = models.CharField(max_length=40)
 
     def __str__(self):
-        return f"Restaurante {self.Nombre} - {self.id}"
+        return f"Restaurante {self.id} - {self.Nombre}"
 
 class Menu(models.Model):
     restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, null=True, related_name='menus')
-    
-    @property
-    def menu_name(self):
-        if self.restaurante:
-            return f"Menu {self.restaurante.Nombre}"
-        else:
-            return "Menu (No Restaurant)"
-
-    def __str__(self):
-        return self.menu_name
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-# Subsitema 4: Contabilidad
-# definido: Ingreso, Gasto, Produce, Emite
-class Ingreso(models.Model):
-    Importe = models.IntegerField()
-    Fecha = models.DateTimeField()
-    comentario = models.TextField(blank=True, null=True)  
-
-
-class Gasto(models.Model):
-    Importe = models.IntegerField()
-    Fecha = models.DateTimeField()
-    comentario = models.TextField(blank=True, null=True)  
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-# Human Resources
-# definido: Employee, Worktime, Schedule, Rating
-
-class Rating(models.Model):
-    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    comentario = models.TextField(blank=True, null=True)  
-    empleado = models.ForeignKey('Employee', related_name='ratings',null=True, on_delete=models.CASCADE)
-    
-    @property
-    def menu_name(self):
-        if self.empleado:
-            return f"Rating Empleado: {self.empleado.Nombre}"
-        else:
-            return "Rating Empleado: (No Employee selected)"
-
-    def __str__(self):
-        return self.menu_name
-    
-class Worktime(models.Model):
-    efficiency = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    employee = models.ForeignKey('Employee', related_name='worktimes', null=True, on_delete=models.CASCADE)
-    
-    @property
-    def menu_name(self):
-        if self.employee:
-            return f"Worktime Empleado: {self.employee.Nombre}"
-        else:
-            return "Worktime Empleado: (No Employee selected)"
-
-    def __str__(self):
-        return self.menu_name
-
-    
-class Employee(models.Model):
-    Nombre = models.CharField(max_length=30, unique=True)
-    Direccion = models.CharField(max_length=255)
-    Telefono = models.CharField(max_length=9, null=True)
-    Salario = models.DecimalField(max_digits=10, decimal_places=2)
-    IBAN = models.CharField(max_length=25)
-    Mail = models.CharField(max_length=30)
-    #Hire_date = models.DateField()
-    
-    def __str__(self):
-        return f"{self.Nombre} - ID:{self.pk}"
-    
-    # un empleado tiene un worktime, un schedule y un rating   
-    gasto = models.OneToOneField(Gasto, null=True, on_delete=models.CASCADE)
-    
-     # añadir varios ratings a un empleado
-    def add_rating(self, rating_value, comentario=None):
-        rating = Rating.objects.create(empleado=self, rating=rating_value, comentario=comentario)
-        return rating
-    
-    def add_worktime(self, efficiency, start_date, end_date):
-        worktime = Worktime.objects.create(employee=self, efficiency=efficiency, start_date=start_date, end_date=end_date)
-        return worktime
-
+    productos = models.ManyToManyField('Producto', related_name='menus')
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Subsitema 2: Logistica
@@ -152,43 +67,52 @@ class Pedido(models.Model):
     ]
 
     COORDENADAS_PREESTABLECIDAS = [  # pasarlo a una API si eso
-        (40.7128, -74.0060),  
-        (34.0522, -118.2437),  
-        (41.8781, -87.6298),  
-        (37.7749, -122.4194),  
-        (51.5074, -0.1278),  
+        (40.7128, -74.0060),  # punto 1
+        (34.0522, -118.2437),  # punto 2
+        (41.8781, -87.6298),  # punto 3
+        (37.7749, -122.4194),  # punto 4
+        (51.5074, -0.1278),  # punto 5
     ]
 
     estado = models.CharField(max_length=40, choices=ESTADO_CHOICES, default=EN_PREPARACION)
     fecha_creacion = models.DateTimeField(default=timezone.now)
-    precio_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    #precio_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, default=1)
     productos = models.ManyToManyField('Producto', through='DetallePedido', limit_choices_to={'menu__restaurante': Restaurante})
-    
-    gasto_generado = models.OneToOneField(Gasto, null=True, blank=True, on_delete=models.SET_NULL, related_name='pedidos_asignados')
-    empleado_asignado = models.ForeignKey(Employee, null=True, blank=True, on_delete=models.SET_NULL, related_name='pedidos_asignados')
-    usuario_asignado = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='pedidos_asignados')
 
     def __str__(self):
-        return f"Pedido {self.id} - Estado: {self.estado}"
+        return f"Pedido {self.id} - Estado: {self.estado}, Precio total: {self.precio_total}"
 
-    def calcular_precio_total(self):
-        detalles = self.detallepedido_set.all()
-        print (sum(detalle.producto.precio * detalle.cantidad for detalle in detalles))
-        return  sum(detalle.producto.precio * detalle.cantidad for detalle in detalles)
-        
+    #def calcular_precio_total(self):
+       # return sum(detalle.precio_total() for detalle in self.detallepedido_set.all())
+    
+    @property
+    def precio_total(self):
+        # Getter method
+        if self.productos.all():
+            return sum(producto.precio for producto in self.productos.all())
+        return 0.0
+
     def save(self, *args, **kwargs):
         # Calcular el precio total antes de guardar el pedido
         #self.precio_total = self.calcular_precio_total()
+
+        
 
         # Establecer la fecha de creación solo si no está establecida previamente
         if not self.fecha_creacion:
             self.fecha_creacion = timezone.now()
 
+        
+        # total = sum(producto.precio for producto in self.productos.all())
+        # self.precio_total = total
+
         # Guardar el pedido con el precio total actualizado y la fecha de creación
         super(Pedido, self).save(*args, **kwargs)
+        
+
 
         # Cambiar las coordenadas cada 2 minutos
         threading.Timer(120, self.cambiar_coordenadas).start()
@@ -211,15 +135,83 @@ class DetallePedido(models.Model):
     def precio_total(self):
         return self.producto.precio * self.cantidad
 
+#@receiver(post_save, sender=DetallePedido)
+#def recalcular_precio_total_pedido(sender, instance, **kwargs):
+#    instance.pedido.precio_total = instance.pedido.calcular_precio_total()
+#    instance.pedido.save()
 
 
+class Encarga(models.Model):
+    usuario = models.ForeignKey(Usuario, unique=True, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido, unique=True, on_delete=models.CASCADE)
+
+# comunica no es necesario, ya que el pedido tiene un restaurante
+#class Comunica(models.Model):
+#    restaurante = models.ForeignKey(Restaurante, unique=True, on_delete=models.CASCADE)
+#    pedido = models.ForeignKey(Pedido, unique=True, on_delete=models.CASCADE)
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Subsitema 4: Contabilidad
+# definido: Ingreso, Gasto, Produce, Emite
+class Ingreso(models.Model):
+    Importe = models.DecimalField(max_digits=10, decimal_places=2)
+    Fecha = models.DateTimeField()
+    pedido = models.ForeignKey(Pedido, unique=True, null=True, on_delete=models.CASCADE)
+
+    # Emisor = models.CharField(max_length=30)
+    
+    def save(self, *args, **kwargs):
+        self.Importe = self.pedido.precio_total
+        
+        super(Ingreso, self).save(*args, **kwargs)
 
 
+class Gasto(models.Model):
+    Importe = models.DecimalField(max_digits=10, decimal_places=2)
+    Fecha = models.DateTimeField()
+    # Destinatario = models.CharField(max_length=30)
 
 
+# class Emite(models.Model):
+#     ingreso = models.ForeignKey(Ingreso, unique=True, on_delete=models.CASCADE)
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Human Resources
+# definido: Employee, Worktime, Schedule, Rating
+
+class Employee(models.Model):
+    Nombre = models.CharField(max_length=30, unique=True)
+    Apellidos = models.CharField(max_length=30)
+    Direccion = models.CharField(max_length=255)
+    Telefono = models.CharField(max_length=9, null=True)
+    Salario = models.DecimalField(max_digits=10, decimal_places=2)
+    IBAN = models.CharField(max_length=25)
+    Mail = models.CharField(max_length=30)
+    Hire_date = models.DateField()
+
+class Worktime(models.Model):
+    worktime = models.DecimalField(max_digits=10, decimal_places=2)
+    efficiency = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    deliveries = models.IntegerField()
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+
+class Schedule(models.Model):
+    worktime = models.ForeignKey(Worktime, unique=True, null=True, on_delete=models.CASCADE)
+    empleado = models.ForeignKey(Employee, unique=True, null=True, on_delete=models.CASCADE)
+
+class Rating(models.Model):
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    empleado = models.ForeignKey(Employee, unique=True, null=True, on_delete=models.CASCADE)
+
+class Asigna(models.Model):
+    pedido = models.ForeignKey(Pedido, unique=True, on_delete=models.CASCADE)
+    empleado = models.ForeignKey(Employee, unique=True, on_delete=models.CASCADE)
+
+class Produce(models.Model):
+    empleado = models.ForeignKey(Employee, unique=True, on_delete=models.CASCADE)
+    gasto = models.ForeignKey(Gasto, unique=True, on_delete=models.CASCADE)
 
 
 

@@ -59,18 +59,16 @@
         </ul>
     </nav>
     
-    <!-- Contenido -->
-
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'crear_pedidos' %}" class="additional-button">Crear Pedido</a>
-            <a href="{% url 'modificar_pedidos' %}" class="additional-button">Modificar Pedido</a>
-            <a href="{% url 'eliminar_pedidos' %}" class="additional-button">Eliminar Pedido</a>
-            <a href="{% url 'pedidos' %}" class="additional-button">Listar Pedidos</a>
+            <a href="{% url 'crear_contabilidad' %}" class="additional-button">Crear Contabilidad</a>
+            <a href="{% url 'modificar_contabilidad' %}" class="additional-button">Modificar Contabilidad</a>
+            <a href="{% url 'eliminar_contabilidad' %}" class="additional-button">Eliminar Contabilidad</a>
+            <a href="{% url 'contabilidad' %}" class="additional-button">Listar Contabilidad</a>
         </div>
 
-    <div id="lista-pedidos">
+    <div id="lista-contabilidad">
         <ul>
             {% for cliente in lista_clientes %}
                 <li>
@@ -83,8 +81,8 @@
         </ul>
     </div>
 
-
-
+       
+    
 
 
 </body>

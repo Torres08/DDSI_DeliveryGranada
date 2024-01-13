@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
 
+    <script src="{% static 'js/funcionalidad_clientes.js' %}"></script>
+
 </head>
 <body>
 
@@ -58,33 +60,30 @@
 
         </ul>
     </nav>
+       
     
     <!-- Contenido -->
 
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'crear_pedidos' %}" class="additional-button">Crear Pedido</a>
-            <a href="{% url 'modificar_pedidos' %}" class="additional-button">Modificar Pedido</a>
-            <a href="{% url 'eliminar_pedidos' %}" class="additional-button">Eliminar Pedido</a>
-            <a href="{% url 'pedidos' %}" class="additional-button">Listar Pedidos</a>
+            <a href="{% url 'crear_restaurantes' %}" class="additional-button">Crear Restaurante</a>
+            <a href="{% url 'modificar_restaurantes' %}" class="additional-button">Modificar Restaurante</a>
+            <a href="{% url 'eliminar_restaurantes' %}" class="additional-button">Eliminar Restaurante</a>
+            <a href="{% url 'restaurantes' %}" class="additional-button">Listar Restaurantes</a>
         </div>
 
-    <div id="lista-pedidos">
-        <ul>
-            {% for cliente in lista_clientes %}
-                <li>
-                    <p>ID: {{ cliente.id }}</p>
-                    <p>Nombre: {{ cliente.Nombre }}</p>
-                    <p>Teléfono: {{ cliente.telefono }}</p>
-                    <p>Dirección: {{ cliente.direccion }}</p>
-                </li>
-            {% endfor %}
-        </ul>
+        <form method="POST" enctype="multipart/form-data">
+ 
+            {% csrf_token %}
+         
+            {{ form.as_p }}
+        
+            <input type="submit" value="Crear">
+        
+        </form>
+
     </div>
-
-
-
 
 
 </body>

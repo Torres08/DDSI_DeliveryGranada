@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/listar.css' %}">
 
 </head>
 <body>
@@ -59,33 +60,40 @@
         </ul>
     </nav>
     
+
     <!-- Contenido -->
 
-    <div class="content">
+        <div class="content">
 
-        <div class="input">
-            <a href="{% url 'crear_pedidos' %}" class="additional-button">Crear Pedido</a>
-            <a href="{% url 'modificar_pedidos' %}" class="additional-button">Modificar Pedido</a>
-            <a href="{% url 'eliminar_pedidos' %}" class="additional-button">Eliminar Pedido</a>
-            <a href="{% url 'pedidos' %}" class="additional-button">Listar Pedidos</a>
-        </div>
+            <div class="input">
+                <a href="{% url 'crear_usuarios' %}" class="additional-button">Crear Usuario</a>
+                <a href="{% url 'modificar_usuarios' %}" class="additional-button">Modificar Usuario</a>
+                <a href="{% url 'eliminar_usuarios' %}" class="additional-button">Eliminar Usuario</a>
+                <a href="{% url 'usuarios' %}" class="additional-button">Listar Usuario</a>
+            </div>
 
-    <div id="lista-pedidos">
-        <ul>
-            {% for cliente in lista_clientes %}
+            <div class="listar">
+                {% for usuario in lista_usuarios %}
+                    <li>
+                        <p>ID: {{ usuario.id }}</p>
+                        <p>Nombre: {{ usuario.Nombre }}</p>
+                        <p>Apellidos: {{ usuario.Apellidos }}</p>
+                        <p>DNI: {{ usuario.DNI }}</p>
+                        <p>Teléfono: {{ usuario.Telefono }}</p>
+                        <p>Dirección: {{ usuario.Direccion }}</p>
+
+                    </li>
+                {% endfor %}
+
+                {% for usuario in usuarios %}
                 <li>
-                    <p>ID: {{ cliente.id }}</p>
-                    <p>Nombre: {{ cliente.Nombre }}</p>
-                    <p>Teléfono: {{ cliente.telefono }}</p>
-                    <p>Dirección: {{ cliente.direccion }}</p>
+                  <a href="{% url 'modificarusuario' id=usuario.id %}">{{ usuario.nombre }}</a>
                 </li>
-            {% endfor %}
-        </ul>
-    </div>
+              {% endfor %}
 
-
-
-
+            </div>
+    
+        </div>
 
 </body>
 </html>
