@@ -24,31 +24,20 @@ class MenuAdmin(admin.ModelAdmin):
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Producto)
 
-class DetallePedidoForm(forms.ModelForm):
-    class Meta:
-        model = DetallePedido
-        fields = '__all__'
 
-    def __init__(self, *args, **kwargs):
-        # Llamamos al método __init__ del formulario base
-        super().__init__(*args, **kwargs)
-
-        # Obtener la instancia del pedido si existe
-        pedido_instance = kwargs.get('instance', None)
-
-        # Filtrar los productos por el restaurante del pedido
-        if pedido_instance and pedido_instance.pk:
-            restaurante = pedido_instance.restaurante
-            self.fields['producto'].queryset = self.fields['producto'].queryset.filter(menu__restaurante=restaurante)
 
 class DetallePedidoInline(admin.TabularInline):
     model = DetallePedido
-    form = DetallePedidoForm
-    extra = 0  # Puedes ajustar la cantidad de formularios en línea que deseas mostrar
+    extra = 0
 
 class PedidoAdmin(admin.ModelAdmin):
-    exclude = ['latitud', 'longitud', 'Estado','precio_total']
+    exclude = [ 'Estado', 'precio_total']
     inlines = [DetallePedidoInline]
+
+    def save_related(self, request, form, formsets, change):
+        # Override save_related to ensure the Pedido instance is saved first
+        super().save_related(request, form, formsets, change)
+        form.instance.save()
 
 admin.site.register(Pedido, PedidoAdmin)
 

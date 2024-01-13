@@ -181,7 +181,7 @@ class Pedido(models.Model):
         
     def save(self, *args, **kwargs):
         # Calcular el precio total antes de guardar el pedido
-        self.precio_total = self.calcular_precio_total()
+        #self.precio_total = self.calcular_precio_total()
 
         # Establecer la fecha de creación solo si no está establecida previamente
         if not self.fecha_creacion:
