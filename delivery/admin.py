@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from .models import Pedido, Encarga, Cliente, Usuario, Restaurante, Menu, Producto, Employee, Worktime, Rating, Asigna, Ingreso, Gasto, Produce, Emite, Schedule, DetallePedido  # Import your models
+from .models import *  # Import your models
 
 admin.site.register(Encarga)
 admin.site.register(Cliente)
@@ -15,7 +15,7 @@ admin.site.register(Asigna)
 admin.site.register(Ingreso)
 admin.site.register(Gasto)
 admin.site.register(Produce)
-admin.site.register(Emite)
+# admin.site.register(Emite)
 admin.site.register(Schedule)
 
 class ProductoInline(admin.TabularInline):

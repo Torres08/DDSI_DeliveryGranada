@@ -7,7 +7,7 @@
     <title>Delivery Granada</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/pedidos/pedidos.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
 
     <script src="{% static 'js/funcionalidad_clientes.js' %}"></script>
 
@@ -26,7 +26,13 @@
         
             <li class="list_item list_item--click">
                 <div class="list_button">
-                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
+                    <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
+                </div>
+            </li>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'restaurantes' %}" class="nav_link">Restaurantes</a>
                 </div>
             </li>
 
@@ -44,6 +50,13 @@
                 <div class="list_button">
                     <a href="{% url 'contabilidad' %}" class="nav_link">Contabilidad</a>
             </div>
+
+            <li class="list_item list_item--app-name">
+                <div class="list_button list_button--app-name">
+                    <p class="app_name">Delivery Granada</p>
+                </div>
+            </li>
+
 
         </ul>
     </nav>

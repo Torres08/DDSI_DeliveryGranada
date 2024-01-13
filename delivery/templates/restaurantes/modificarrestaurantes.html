@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
 
+    <script src="{% static 'js/funcionalidad_clientes.js' %}"></script>
+
 </head>
 <body>
 
@@ -58,33 +60,31 @@
 
         </ul>
     </nav>
+       
     
     <!-- Contenido -->
 
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'crear_pedidos' %}" class="additional-button">Crear Pedido</a>
-            <a href="{% url 'modificar_pedidos' %}" class="additional-button">Modificar Pedido</a>
-            <a href="{% url 'eliminar_pedidos' %}" class="additional-button">Eliminar Pedido</a>
-            <a href="{% url 'pedidos' %}" class="additional-button">Listar Pedidos</a>
+            <a href="{% url 'crear_restaurantes' %}" class="additional-button">Crear Restaurante</a>
+            <a href="{% url 'modificar_restaurantes' %}" class="additional-button">Modificar Restaurante</a>
+            <a href="{% url 'eliminar_restaurantes' %}" class="additional-button">Eliminar Restaurante</a>
+            <a href="{% url 'restaurantes' %}" class="additional-button">Listar Restaurantes</a>
         </div>
 
-    <div id="lista-pedidos">
-        <ul>
-            {% for cliente in lista_clientes %}
-                <li>
-                    <p>ID: {{ cliente.id }}</p>
-                    <p>Nombre: {{ cliente.Nombre }}</p>
-                    <p>Teléfono: {{ cliente.telefono }}</p>
-                    <p>Dirección: {{ cliente.direccion }}</p>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-
-
-
+        <h2>Modificar Pedido</h2>
+        <form id="formModificar">
+            <label for="idModificar">ID del Pedido a Modificar:</label>
+            <input type="text" id="idModificar" required>
+            <label for="nuevoNombre">Nuevo Nombre del Pedido:</label>
+            <input type="text" id="nuevoNombre" required>
+            <button type="button" onclick="modificarPedido()">Modificar Pedido</button>
+        </form>
+    
+        <div class="result" id="resultado"></div>
+    
+        <script src="update.js"></script>
 
 
 </body>

@@ -25,10 +25,11 @@ class Cliente(models.Model):
         self.delete()
 
 class Usuario(Cliente):
+    Apellidos = models.CharField(max_length=255, null=True)
     DNI = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
-        return f"{self.id} - {self.Nombre}"
+        return f"{self.id} - {self.Nombre} {self.Apellidos}"
 
 class Restaurante(Cliente):
     NRC = models.CharField(max_length=15, unique=True)
@@ -75,28 +76,43 @@ class Pedido(models.Model):
 
     estado = models.CharField(max_length=40, choices=ESTADO_CHOICES, default=EN_PREPARACION)
     fecha_creacion = models.DateTimeField(default=timezone.now)
-    precio_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    #precio_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, default=1)
     productos = models.ManyToManyField('Producto', through='DetallePedido', limit_choices_to={'menu__restaurante': Restaurante})
 
     def __str__(self):
-        return f"Pedido {self.id} - Estado: {self.estado}"
+        return f"Pedido {self.id} - Estado: {self.estado}, Precio total: {self.precio_total}"
 
-    def calcular_precio_total(self):
-        return sum(detalle.precio_total() for detalle in self.detallepedido_set.all())
+    #def calcular_precio_total(self):
+       # return sum(detalle.precio_total() for detalle in self.detallepedido_set.all())
+    
+    @property
+    def precio_total(self):
+        # Getter method
+        if self.productos.all():
+            return sum(producto.precio for producto in self.productos.all())
+        return 0.0
 
     def save(self, *args, **kwargs):
         # Calcular el precio total antes de guardar el pedido
-        self.precio_total = self.calcular_precio_total()
+        #self.precio_total = self.calcular_precio_total()
+
+        
 
         # Establecer la fecha de creación solo si no está establecida previamente
         if not self.fecha_creacion:
             self.fecha_creacion = timezone.now()
 
+        
+        # total = sum(producto.precio for producto in self.productos.all())
+        # self.precio_total = total
+
         # Guardar el pedido con el precio total actualizado y la fecha de creación
         super(Pedido, self).save(*args, **kwargs)
+        
+
 
         # Cambiar las coordenadas cada 2 minutos
         threading.Timer(120, self.cambiar_coordenadas).start()
@@ -139,19 +155,26 @@ class Encarga(models.Model):
 # Subsitema 4: Contabilidad
 # definido: Ingreso, Gasto, Produce, Emite
 class Ingreso(models.Model):
-    Importe = models.IntegerField()
+    Importe = models.DecimalField(max_digits=10, decimal_places=2)
     Fecha = models.DateTimeField()
+    pedido = models.ForeignKey(Pedido, unique=True, null=True, on_delete=models.CASCADE)
+
     # Emisor = models.CharField(max_length=30)
+    
+    def save(self, *args, **kwargs):
+        self.Importe = self.pedido.precio_total
+        
+        super(Ingreso, self).save(*args, **kwargs)
+
 
 class Gasto(models.Model):
-    Importe = models.IntegerField()
+    Importe = models.DecimalField(max_digits=10, decimal_places=2)
     Fecha = models.DateTimeField()
     # Destinatario = models.CharField(max_length=30)
 
 
-class Emite(models.Model):
-    pedido = models.ForeignKey(Pedido, unique=True, null=True, on_delete=models.CASCADE)
-    ingreso = models.ForeignKey(Ingreso, unique=True, on_delete=models.CASCADE)
+# class Emite(models.Model):
+#     ingreso = models.ForeignKey(Ingreso, unique=True, on_delete=models.CASCADE)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Human Resources
