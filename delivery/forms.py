@@ -1,30 +1,18 @@
 from django import forms
-from .models import Usuario, Employee, Restaurante, Pedido
+from .models import Cliente
 
-class UsuarioForm(forms.ModelForm):
+class ClienteForm(forms.ModelForm):
     class Meta:
-        model = Usuario
-        fields = ['Nombre', 'Apellidos', 'Telefono', 'Direccion', 'DNI']
+        model = Cliente
+        fields = ['Nombre', 'Telefono', 'Direccion']
 
-class EliminaUsuarioForm(forms.ModelForm):
+class EliminaClienteForm(forms.ModelForm):
     class Meta:
-        model = Usuario
-        fields = ['Nombre', 'Apellidos']  
+        model = Cliente
+        fields = ['Nombre']  
 
-class ModificarUsuarioForm(forms.Form):
+class ModificarClienteForm(forms.Form):
     Nombre = forms.CharField(max_length=255)
     NuevoNombre = forms.CharField(max_length=255)
-    NuevoApellidos = forms.CharField(max_length=255)
     NuevoTelefono = forms.CharField(max_length=9)
     NuevaDireccion = forms.CharField(max_length=255)
-    NuevoDNI = forms.CharField(max_length=9)
-
-class RestauranteForm(forms.ModelForm):
-    class Meta:
-        model = Restaurante
-        fields = ['Nombre', 'Telefono', 'Direccion', 'NRC', 'Empleados', 'Propietario']
-
-class EmpleadoForm(forms.ModelForm):
-    class Meta:
-        model = Employee
-        fields = ['Nombre', 'Apellidos', 'Direccion', 'Telefono', 'Salario', 'IBAN', 'Mail']
