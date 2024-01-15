@@ -12,11 +12,10 @@ body {
 
 .list {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end; 
     margin: 0;
     padding: 0;
     list-style: none;
-    margin-left: 10px;
 }
 
 .list_item {
@@ -33,8 +32,9 @@ body {
     color: #fff; 
 }
 
+
 .list_item--app-name {
-    margin-left: auto; /* Pega el app_name a la derecha */
+    margin-left: 20px; /
 }
 
 .list_button--app-name {
@@ -47,4 +47,3 @@ body {
     font-size: 18px;
     color: #fff; 
 }
-

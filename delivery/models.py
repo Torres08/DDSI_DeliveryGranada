@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.dispatch import receiver
 from django.utils import timezone
 import threading
+from django.db.models.signals import post_save
 
 # py manage.py makemigrations
 # py manage.py migrate 
@@ -24,12 +25,14 @@ class Cliente(models.Model):
         # Método para eliminar el cliente
         self.delete()
 
+
 class Usuario(Cliente):
     Apellidos = models.CharField(max_length=255, null=True)
-    DNI = models.CharField(max_length=9, unique=True)
+    DNI = models.CharField(max_length=9 , unique=True)
 
     def __str__(self):
         return f"Usuario: {self.Nombre} - {self.id}"
+
 
 class Restaurante(Cliente):
     NRC = models.CharField(max_length=15, unique=True)
@@ -51,22 +54,6 @@ class Menu(models.Model):
 
     def __str__(self):
         return self.menu_name
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-# Subsitema 4: Contabilidad
-# definido: Ingreso, Gasto, Produce, Emite
-class Ingreso(models.Model):
-    Importe = models.IntegerField()
-    Fecha = models.DateTimeField()
-    comentario = models.TextField(blank=True, null=True)  
-
-
-class Gasto(models.Model):
-    Importe = models.IntegerField()
-    Fecha = models.DateTimeField()
-    comentario = models.TextField(blank=True, null=True)  
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Human Resources
@@ -111,12 +98,10 @@ class Employee(models.Model):
     Telefono = models.CharField(max_length=9, null=True)
     IBAN = models.CharField(max_length=25, unique=True)
     Mail = models.CharField(max_length=30)
+    disponible = models.BooleanField(default=True)
     
     def __str__(self):
         return f"{self.Nombre} - ID:{self.pk}"
-    
-    # un empleado tiene un worktime, un schedule y un rating   
-    gasto = models.OneToOneField(Gasto, null=True, on_delete=models.CASCADE)
     
      # añadir varios ratings a un empleado
     def add_rating(self, rating_value, comentario=None):
@@ -141,35 +126,22 @@ class Producto(models.Model):
         return f"{self.nombre} - ${self.precio}"
 
 class Pedido(models.Model):
-    EN_PREPARACION = 'En Preparación'
-    EN_ENVIO = 'En Envío'
-    ENTREGADO = 'Entregado'
 
-    ESTADO_CHOICES = [
-        (EN_PREPARACION, 'En Preparación'),
-        (EN_ENVIO, 'En Envío'),
-        (ENTREGADO, 'Entregado'),
-    ]
+    ESTADO_CHOICES = (
+        ('En Preparación', 'En preparación'),
+        ('envio', 'En envío'),
+        ('entregado', 'Entregado'),
+    )
 
-    COORDENADAS_PREESTABLECIDAS = [  # pasarlo a una API si eso
-        (40.7128, -74.0060),  
-        (34.0522, -118.2437),  
-        (41.8781, -87.6298),  
-        (37.7749, -122.4194),  
-        (51.5074, -0.1278),  
-    ]
-
-    estado = models.CharField(max_length=40, choices=ESTADO_CHOICES, default=EN_PREPARACION)
+    estado = models.CharField(max_length=40, choices=ESTADO_CHOICES, default='En Preparación')
     fecha_creacion = models.DateTimeField(default=timezone.now)
     precio_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    #latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    #longitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, default=1)
     productos = models.ManyToManyField('Producto', through='DetallePedido', limit_choices_to={'menu__restaurante': Restaurante})
-    
-    gasto_generado = models.OneToOneField(Gasto, null=True, blank=True, on_delete=models.SET_NULL, related_name='pedidos_asignados')
-    empleado_asignado = models.ForeignKey(Employee, null=True, blank=True, on_delete=models.SET_NULL, related_name='pedidos_asignados')
-    usuario_asignado = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name='pedidos_asignados')
+    repartidor = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"Pedido {self.id} - Estado: {self.estado}"
@@ -179,25 +151,40 @@ class Pedido(models.Model):
         print (sum(detalle.producto.precio * detalle.cantidad for detalle in detalles))
         return  sum(detalle.producto.precio * detalle.cantidad for detalle in detalles)
         
-    def save(self, *args, **kwargs):
+    #def save(self, *args, **kwargs):
         # Calcular el precio total antes de guardar el pedido
         #self.precio_total = self.calcular_precio_total()
 
-        # Establecer la fecha de creación solo si no está establecida previamente
-        if not self.fecha_creacion:
-            self.fecha_creacion = timezone.now()
-
         # Guardar el pedido con el precio total actualizado y la fecha de creación
-        super(Pedido, self).save(*args, **kwargs)
+        #super(Pedido, self).save(*args, **kwargs)
 
         # Cambiar las coordenadas cada 2 minutos
-        threading.Timer(120, self.cambiar_coordenadas).start()
+        #threading.Timer(120, self.cambiar_coordenadas).start()
 
-    def cambiar_coordenadas(self):
+    ##def cambiar_coordenadas(self):
         # Seleccionar aleatoriamente una de las coordenadas preestablecidas
-        nueva_coordenada = random.choice(self.COORDENADAS_PREESTABLECIDAS)
-        self.latitud, self.longitud = nueva_coordenada
+        ##nueva_coordenada = random.choice(self.COORDENADAS_PREESTABLECIDAS)
+        ##self.latitud, self.longitud = nueva_coordenada
+
     
+class Asigna(models.Model):
+
+    trabajador = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('trabajador', 'pedido')  # Garantiza que un pedido solo pueda asignarse a un trabajador una vez
+
+# Actualización del receptor para asignar automáticamente un trabajador al crear un pedido
+@receiver(post_save, sender=Pedido)
+def asignar_repartidor(sender, instance, created, **kwargs):
+    if created and instance.estado == 'En preparación' and Employee.objects.filter(disponible=True).exists():
+        repartidor_disponible = Employee.objects.filter(disponible=True).first()
+        instance.repartidor = repartidor_disponible
+        instance.save()
+        repartidor_disponible.disponible = False
+        repartidor_disponible.save()
+
 # relacion entre producto y pedido con info adicional
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
@@ -210,6 +197,33 @@ class DetallePedido(models.Model):
      
     def precio_total(self):
         return self.producto.precio * self.cantidad
+
+
+class Encarga(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('usuario', 'pedido')
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Subsitema 4: Contabilidad
+# definido: Ingreso, Gasto, Produce, Emite
+class Ingreso(models.Model):
+    Importe = models.IntegerField()
+    Fecha = models.DateTimeField()
+    comentario = models.TextField(blank=True, null=True)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        unique_together = ('pedido',)  # Garantiza que solo haya un ingreso por pedido   
+
+
+class Gasto(models.Model):
+    Importe = models.IntegerField()
+    Fecha = models.DateTimeField()
+    comentario = models.TextField(blank=True, null=True)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
 
 
 
