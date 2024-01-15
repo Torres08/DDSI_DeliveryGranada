@@ -73,7 +73,16 @@
             <a href="{% url 'ingresos' %}" class="additional-button">Listar Ingresos</a>
         </div>
 
-
+        <form method="POST" enctype="multipart/form-data">
+ 
+            {% csrf_token %}
+         
+            {{ form.as_p }}
+        
+            <input type="submit" value="Crear">
+        
+        </form>
+    </div>
 
 
 

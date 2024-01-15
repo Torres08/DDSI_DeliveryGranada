@@ -1,15 +1,13 @@
 from django import forms
-from .models import Usuario, Employee, Restaurante, Pedido, Ingreso, Gasto
+from .models import Usuario, Employee, Restaurante, Pedido, Ingreso, Gasto, Cliente
 
 class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
         fields = ['Nombre', 'Apellidos', 'Telefono', 'Direccion', 'DNI']
 
-class EliminaUsuarioForm(forms.ModelForm):
-    class Meta:
-        model = Usuario
-        fields = ['Nombre', 'Apellidos']  
+class EliminaUsuarioForm(forms.Form):
+    usuario = forms.ModelChoiceField(queryset=Usuario.objects.all(), empty_label=None, to_field_name='id', label='Selecciona un usuario') 
 
 class ModificarUsuarioForm(forms.Form):
     Nombre = forms.CharField(max_length=255)
@@ -43,3 +41,19 @@ class GastoForm(forms.ModelForm):
     class Meta:
         model = Gasto
         fields = ['Importe', 'Fecha', 'comentario']
+
+class ClienteForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ['Nombre', 'Telefono', 'Direccion']
+
+class EliminaClienteForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ['Nombre']  
+
+class ModificarClienteForm(forms.Form):
+    Nombre = forms.CharField(max_length=255)
+    NuevoNombre = forms.CharField(max_length=255)
+    NuevoTelefono = forms.CharField(max_length=9)
+    NuevaDireccion = forms.CharField(max_length=255)

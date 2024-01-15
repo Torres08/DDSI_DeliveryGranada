@@ -22,7 +22,13 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
-        
+            
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
+                </div>
+            </li>
+
             <li class="list_item list_item--click">
                 <div class="list_button">
                     <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
@@ -67,8 +73,6 @@
 
             <div class="input">
                 <a href="{% url 'crear_usuarios' %}" class="additional-button">Crear Usuario</a>
-                <a href="{% url 'modificar_usuarios' %}" class="additional-button">Modificar Usuario</a>
-                <a href="{% url 'eliminar_usuarios' %}" class="additional-button">Eliminar Usuario</a>
                 <a href="{% url 'usuarios' %}" class="additional-button">Listar Usuario</a>
             </div>
 
@@ -93,6 +97,8 @@
                             <td>{{ usuario.DNI }}</td>
                             <td>{{ usuario.Telefono }}</td>
                             <td>{{ usuario.Direccion }}</td>
+                            <td> <a href="{% url 'modificar_usuarios' %}" role="button">Editar</a>
+                            <td> <a href="{% url 'eliminar_usuarios' %}" role="button">Borrar</a>
                         </tr>
                         {% endfor %}
                     </tbody>

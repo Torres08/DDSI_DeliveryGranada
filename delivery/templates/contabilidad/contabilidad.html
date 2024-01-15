@@ -13,8 +13,6 @@
 </head>
 <body>
 
-    <!-- Barra de navegación -->
-    
     <nav class="nav">
         <ul class="list">
             <li class="list_item list_item--click">
@@ -22,7 +20,13 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
-        
+            
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
+                </div>
+            </li>
+
             <li class="list_item list_item--click">
                 <div class="list_button">
                     <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
@@ -63,10 +67,8 @@
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'crear_contabilidad' %}" class="additional-button">Crear Contabilidad</a>
-            <a href="{% url 'modificar_contabilidad' %}" class="additional-button">Modificar Contabilidad</a>
-            <a href="{% url 'eliminar_contabilidad' %}" class="additional-button">Eliminar Contabilidad</a>
-            <a href="{% url 'contabilidad' %}" class="additional-button">Listar Contabilidad</a>
+            <a href="{% url 'ingresos' %}" class="additional-button">Ingresos</a>
+            <a href="{% url 'gastos' %}" class="additional-button">Gastos</a>
         </div>
 
        

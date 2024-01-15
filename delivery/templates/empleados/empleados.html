@@ -13,8 +13,6 @@
 </head>
 <body>
 
-    <!-- Barra de navegación -->
-    
     <nav class="nav">
         <ul class="list">
             <li class="list_item list_item--click">
@@ -22,7 +20,13 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
-        
+            
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
+                </div>
+            </li>
+
             <li class="list_item list_item--click">
                 <div class="list_button">
                     <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
