@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Granada</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/listar_tabla.css' %}">
+
+</head>
+<body>
+
+    <!-- Barra de navegación -->
+    
+    <nav class="nav">
+        <ul class="list">
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'home' %}" class="nav_link">Inicio</a>
+                </div>
+            </li>
+        
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
+                </div>
+            </li>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'restaurantes' %}" class="nav_link">Restaurantes</a>
+                </div>
+            </li>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'pedidos' %}" class="nav_link">Pedido</a>
+            </div>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'empleados' %}" class="nav_link">Empleados</a>
+            </div>
+
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'contabilidad' %}" class="nav_link">Contabilidad</a>
+            </div>
+
+            <li class="list_item list_item--app-name">
+                <div class="list_button list_button--app-name">
+                    <p class="app_name">Delivery Granada</p>
+                </div>
+            </li>
+
+
+        </ul>
+    </nav>
+    
+    <div class="content">
+
+        <div class="input">
+            <a href="{% url 'crear_gastos' %}" class="additional-button">Crear Gasto</a>
+            <a href="{% url 'modificar_gastos' %}" class="additional-button">Modificar Gasto</a>
+            <a href="{% url 'eliminar_gastos' %}" class="additional-button">Eliminar Gasto</a>
+            <a href="{% url 'gastos' %}" class="additional-button">Listar Gastos</a>
+        </div>
+
+        <div>
+            <h2>Lista de Gastos</h2>
+            <table class="table">
+                <thead>
+                    <th>ID</th>
+                    <th>Importe</th>
+                    <th>Fecha</th>
+                    <th>Comentario</th>
+                    <th>ID Trabajador</th>
+                </thead>
+                <tbody>
+                    {% for gasto in gastos %}
+                    <tr>
+                        <td>{{ ingreso.id }}</td>
+                        <td>{{ ingreso.Importe }}</td>
+                        <td>{{ ingreso.Fecha }}</td>
+                        <td>{{ ingreso.Comentario }}</td>
+                        <td>{{ ingreso.employee_id }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+       
+    
+
+
+</body>
+</html>
