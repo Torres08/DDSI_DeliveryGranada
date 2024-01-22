@@ -97,13 +97,21 @@
                             <td>{{ usuario.DNI }}</td>
                             <td>{{ usuario.Telefono }}</td>
                             <td>{{ usuario.Direccion }}</td>
-                            <td> <a href="{% url 'modificar_usuarios' %}" role="button">Editar</a>
-                            <td> <a href="{% url 'eliminar_usuarios' %}" role="button">Borrar</a>
+                            <td>
+                                <a href="{% url 'eliminar_usuarios' usuario.id %}" class="additional-button">Eliminar</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'modificar_usuarios' usuario.id %}" class="additional-button">Modificar</a>
+                            </td>
+
                         </tr>
+
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+            
+            
             
             </div>
     

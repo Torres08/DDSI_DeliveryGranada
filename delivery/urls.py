@@ -1,13 +1,21 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('usuarios/', views.usuario, name='usuarios'),
     path('usuarios/crear_usuario', views.crear_usuario, name='crear_usuarios'),
-    path('usuarios/eliminar_usuario', views.eliminar_usuario, name='eliminar_usuarios'),
-    path('usuarios/modificar_usuario', views.modificar_usuario, name='modificar_usuarios'),
-    path('usuarios/listar_usuario', views.listar_usuarios, name='listar_usuarios'),
+    path('usuarios/<int:id>/eliminar_usuarios/', views.eliminar_usuarios, name='eliminar_usuarios'),
+    
+    path('usuarios/<int:id>/modificar_usuarios/', views.modificar_usuario, name='modificar_usuarios'),
+
+    
+    #path('eliminar_usuarios/<int:id>/', views.eliminar_usuario, name='eliminar_usuarios'),
+    #path('usuarios/modificar_usuario', views.modificar_usuario, name='modificar_usuarios'),
+    #path('modificar_usuarios/<int:id>/', views.modificar_usuario, name='modificar_usuarios'),
+    
+    
     path('restaurantes/', views.restaurante, name='restaurantes'),
     path('restaurantes/crear_restaurante', views.crear_restaurante, name='crear_restaurantes'),
     path('restaurantes/eliminar_restaurante', views.eliminar_restaurante, name='eliminar_restaurantes'),
@@ -32,5 +40,7 @@ urlpatterns = [
     path('contabilidad/crear_gasto', views.crear_gasto, name='crear_gastos'),
     path('contabilidad/eliminar_gasto', views.eliminar_gasto, name='eliminar_gastos'),
     path('contabilidad/modificar_gasto', views.modificar_gasto, name='modificar_gastos'),
+    
+    
     path('clientes/', views.clientes, name='clientes'),
 ]

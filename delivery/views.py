@@ -5,40 +5,64 @@ from .forms import *
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.urls import reverse
+from django.views.decorators.http import require_POST
 
 def home(request):
    return render(request, "home.html")
+
+
+# usuario 
+
+
 
 
 def usuario(request):
     usuarios = Usuario.objects.all()
     return render(request, 'usuarios/usuarios.html', {'usuarios': usuarios})
 
-def crear_usuario(request):
+from django.shortcuts import render, redirect
+from .forms import UsuarioForm
+from .models import Usuario
 
+def crear_usuario(request):
     form = UsuarioForm(request.POST or None)
     
-    if form.is_valid():
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('usuarios')
+        else:
+            print(form.errors)
 
-        form.save()
-        return redirect('usuario')
+    return render(request, 'usuarios/crearusuarios.html', {'form': form})
 
-    return render(request, 'usuarios/crearusuarios.html', {'form' : form})
+def eliminar_usuarios(request, id):
+    usuario = get_object_or_404(Usuario, id=id)
+
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            usuario.delete()
+            return redirect('usuarios')
+
+    return render(request, 'usuarios/eliminar_usuarios.html', {'usuario': usuario})
 
 def modificar_usuario(request, id):
-    #usuario = usuario.objects.get(id=id)
-    #form = UsuarioForm(request.POST or None)
-    return render(request, 'usuarios/modificarusuarios.html') #{'form' : form})
+    usuario = get_object_or_404(Usuario, id=id)
+    form = UsuarioForm(request.POST or None, instance=usuario)
 
-def eliminar_usuario(request, id):
-    usuario = Usuario.objects.get(id=id)
-    usuario.delete()
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('usuarios')
+        else:
+            print(form.errors)
 
-    return redirect('usuario')
+    return render(request, 'usuarios/modificar_usuarios.html', {'form': form, 'usuario': usuario})
 
-def listar_usuarios(request):
-    usuarios = Usuario.objects.all()
-    return render(request, 'usuarios/usuarios.html', {'usuarios': usuarios})
+#############################################
+
 
 def restaurante(request):
     restaurantes = Restaurante.objects.all()
