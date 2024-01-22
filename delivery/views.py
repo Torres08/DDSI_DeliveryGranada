@@ -12,10 +12,6 @@ def home(request):
 
 
 # usuario 
-
-
-
-
 def usuario(request):
     usuarios = Usuario.objects.all()
     return render(request, 'usuarios/usuarios.html', {'usuarios': usuarios})
@@ -63,26 +59,51 @@ def modificar_usuario(request, id):
 
 #############################################
 
-
+# restaurante
 def restaurante(request):
     restaurantes = Restaurante.objects.all()
     return render(request, 'restaurantes/restaurantes.html', {'restaurantes': restaurantes})
 
 def crear_restaurante(request):
-
     form = RestauranteForm(request.POST or None)
     
-    if form.is_valid():
-        form.save()
-        return redirect('restaurante')
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('restaurantes')
+        else:
+            print(form.errors)
 
-    return render(request, 'restaurantes/crearrestaurantes.html', {'form' : form})
+    return render(request, 'restaurantes/crear_restaurantes.html', {'form': form})
 
-def eliminar_restaurante(request):
-    return render(request, 'restaurantes/eliminarrestaurantes.html')
+def eliminar_restaurantes(request,id):
+    restaurante = get_object_or_404(Restaurante, id=id)
 
-def modificar_restaurante(request):
-    return render(request, 'restaurantes/modificarrestaurantes.html')
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            restaurante.delete()
+            return redirect('restaurantes')
+
+    return render(request, 'restaurantes/eliminar_restaurantes.html', {'restaurantes': restaurante})
+
+def modificar_restaurantes(request, id):
+    restaurante = get_object_or_404(Restaurante, id=id)
+    form = RestauranteForm(request.POST or None, instance=restaurante)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('restaurantes')
+        else:
+            print(form.errors)
+
+    return render(request, 'restaurantes/modificar_restaurantes.html', {'form': form, 'restaurante': restaurante})
+
+
+#############################################
+
 
 def pedidos(request):
     pedidos = Pedido.objects.all()

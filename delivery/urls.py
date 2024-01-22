@@ -7,19 +7,19 @@ urlpatterns = [
     path('usuarios/', views.usuario, name='usuarios'),
     path('usuarios/crear_usuario', views.crear_usuario, name='crear_usuarios'),
     path('usuarios/<int:id>/eliminar_usuarios/', views.eliminar_usuarios, name='eliminar_usuarios'),
-    
     path('usuarios/<int:id>/modificar_usuarios/', views.modificar_usuario, name='modificar_usuarios'),
 
     
-    #path('eliminar_usuarios/<int:id>/', views.eliminar_usuario, name='eliminar_usuarios'),
-    #path('usuarios/modificar_usuario', views.modificar_usuario, name='modificar_usuarios'),
-    #path('modificar_usuarios/<int:id>/', views.modificar_usuario, name='modificar_usuarios'),
-    
-    
     path('restaurantes/', views.restaurante, name='restaurantes'),
     path('restaurantes/crear_restaurante', views.crear_restaurante, name='crear_restaurantes'),
-    path('restaurantes/eliminar_restaurante', views.eliminar_restaurante, name='eliminar_restaurantes'),
-    path('restaurantes/modificar_restaurante', views.modificar_restaurante, name='modificar_restaurantes'),
+    path('restaurantes/<int:id>/eliminar_restaurantes/', views.eliminar_restaurantes, name='eliminar_restaurantes'),
+    path('restaurantes/<int:id>/modificar_restaurantes/', views.modificar_restaurantes, name='modificar_restaurantes'),
+
+    #path('restaurantes/eliminar_restaurante', views.eliminar_restaurante, name='eliminar_restaurantes'),
+    #path('restaurantes/modificar_restaurante', views.modificar_restaurante, name='modificar_restaurantes'),
+   
+    
+   
     path('pedidos/', views.pedidos, name='pedidos'),
     path('pedidos/crear_pedido', views.crear_pedido, name='crear_pedidos'),
     path('pedidos/eliminar_pedido', views.eliminar_pedido, name='eliminar_pedidos'),

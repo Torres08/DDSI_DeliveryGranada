@@ -68,10 +68,20 @@
 
         <div class="input">
             <a href="{% url 'crear_restaurantes' %}" class="additional-button">Crear Restaurante</a>
-            <a href="{% url 'modificar_restaurantes' %}" class="additional-button">Modificar Restaurante</a>
-            <a href="{% url 'eliminar_restaurantes' %}" class="additional-button">Eliminar Restaurante</a>
             <a href="{% url 'restaurantes' %}" class="additional-button">Listar Restaurantes</a>
         </div>
+
+        <form method="POST" enctype="multipart/form-data">
+ 
+            {% csrf_token %}
+         
+            {{ form.as_p }}
+        
+            <input type="submit" value="Crear">
+        
+        </form>
+
+    </div>
 
 
 </body>

@@ -68,22 +68,22 @@
 
         <div class="input">
             <a href="{% url 'crear_restaurantes' %}" class="additional-button">Crear Restaurante</a>
-            <a href="{% url 'modificar_restaurantes' %}" class="additional-button">Modificar Restaurante</a>
-            <a href="{% url 'eliminar_restaurantes' %}" class="additional-button">Eliminar Restaurante</a>
             <a href="{% url 'restaurantes' %}" class="additional-button">Listar Restaurantes</a>
         </div>
 
-        <form method="POST" enctype="multipart/form-data">
- 
-            {% csrf_token %}
-         
-            {{ form.as_p }}
-        
-            <input type="submit" value="Crear">
-        
-        </form>
+        <div>
+            <h2>Confirmar Eliminación</h2>
+            <p>¿Estás seguro de que deseas eliminar al restaurante "{{ restaurante.Nombre }}"?</p>
+            <form method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="confirmacion" value="si" >
+                <button type="submit">Sí, eliminar</button>
+            </form>
+            <a href="{% url 'restaurantes' %}" class="additional-button">Cancelar</a>
+        </div>
+    <div>
 
-    </div>
+
 
 
 </body>

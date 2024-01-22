@@ -68,14 +68,16 @@
 
         <div class="input">
             <a href="{% url 'crear_restaurantes' %}" class="additional-button">Crear Restaurante</a>
-            <a href="{% url 'modificar_restaurantes' %}" class="additional-button">Modificar Restaurante</a>
-            <a href="{% url 'eliminar_restaurantes' %}" class="additional-button">Eliminar Restaurante</a>
             <a href="{% url 'restaurantes' %}" class="additional-button">Listar Restaurantes</a>
         </div>
-
-
-
-
+    
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Guardar Cambios</button>
+        </form>
+        
+    <div>
 
 </body>
 </html>
