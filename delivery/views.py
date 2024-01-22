@@ -152,11 +152,15 @@ def modificar_empleados(request,id):
 
 def ingresos(request):
     ingresos = Ingreso.objects.all()
+    gastos = Gasto.objects.all()
+
     hola_mundo = "¡Hola, Mundo!"
-    #total_ingresos = 5
     total_ingresos = ingresos.aggregate(Sum('Importe'))['Importe__sum'] or 0  # Calcula la suma de los importes
-        
-    return render(request, 'contabilidad/ingreso/ingresos.html', {'ingresos': ingresos, 'hola_mundo': hola_mundo, 'total_ingresos': total_ingresos})
+    total_gastos = gastos.aggregate(Sum('Importe'))['Importe__sum'] or 0  # Calcula la suma de los importes
+    
+    balance = total_ingresos - total_gastos
+    
+    return render(request, 'contabilidad/ingreso/ingresos.html', {'ingresos': ingresos, 'hola_mundo': hola_mundo, 'total_ingresos': total_ingresos, 'balance': balance})
 
 def crear_ingreso(request):
     form = IngresoForm(request.POST or None)
@@ -192,13 +196,6 @@ def modificar_ingreso(request,id):
     return render(request, 'contabilidad/ingreso/modificar_ingresos.html', {'form': form, 'ingresos': ingreso})
 
 
-
-
-
-
-
-
-
 #############################################
 
 def pedidos(request):
@@ -231,7 +228,13 @@ def modificar_contabilidad(request):
 
 def gastos(request):
     gastos = Gasto.objects.all()
-    return render(request, 'contabilidad/gasto/gastos.html',{'gastos': gastos})
+    ingresos = Ingreso.objects.all()
+
+    total_ingresos = ingresos.aggregate(Sum('Importe'))['Importe__sum'] or 0  # Calcula la suma de los importes
+    total_gastos = gastos.aggregate(Sum('Importe'))['Importe__sum'] or 0  # Calcula la suma de los importes
+    
+    balance = total_ingresos - total_gastos
+    return render(request, 'contabilidad/gasto/gastos.html',{'gastos': gastos, 'total_gastos': total_gastos, 'balance': balance})
 
 def crear_gasto(request):
     form = GastoForm(request.POST or None)
