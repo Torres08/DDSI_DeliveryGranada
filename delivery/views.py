@@ -146,6 +146,49 @@ def modificar_empleados(request,id):
 
 
 #############################################
+
+# ingreso
+
+def ingresos(request):
+    ingresos = Ingreso.objects.all()
+    return render(request, 'contabilidad/ingreso/ingresos.html', {'ingresos': ingresos})
+
+def crear_ingreso(request):
+    form = IngresoForm(request.POST or None)
+    
+    if form.is_valid():
+        form.save()
+        return redirect('ingresos')
+    return render(request, 'contabilidad/ingreso/crear_ingreso.html', {'form': form})
+
+def eliminar_ingreso(request,id):
+    ingreso = get_object_or_404(Ingreso, id=id)
+
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            ingreso.delete()
+            return redirect('ingresos')
+
+    return render(request, 'contabilidad/ingreso/eliminar_ingresos.html', {'ingresos': ingreso})
+
+def modificar_ingreso(request,id):
+    ingreso = get_object_or_404(Ingreso, id=id)
+    form = IngresoForm(request.POST or None, instance=ingreso)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('ingresos')
+        else:
+            print(form.errors)
+
+    return render(request, 'contabilidad/ingreso/modificar_ingresos.html', {'form': form, 'ingresos': ingreso})
+
+
+#############################################
+
 def pedidos(request):
     pedidos = Pedido.objects.all()
     return render(request, 'pedidos/pedidos.html',{'pedidos': pedidos})
@@ -172,23 +215,7 @@ def eliminar_contabilidad(request):
 def modificar_contabilidad(request):
     return render(request, 'contabilidad/modificarcontabilidad.html')
 
-def ingresos(request):
-    ingresos = Ingreso.objects.all()
-    return render(request, 'contabilidad/ingreso/ingresos.html', {'ingresos': ingresos})
 
-def crear_ingreso(request):
-    form = IngresoForm(request.POST or None)
-    
-    if form.is_valid():
-        form.save()
-        return redirect('ingresos')
-    return render(request, 'contabilidad/ingreso/crearingreso.html', {'form': form})
-
-def eliminar_ingreso(request):
-    return render(request, 'contabilidad/ingreso/eliminaringreso.html')
-
-def modificar_ingreso(request):
-    return render(request, 'contabilidad/ingreso/modificaringreso.html')
 
 def gastos(request):
     gastos = Gasto.objects.all()

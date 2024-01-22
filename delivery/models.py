@@ -218,7 +218,6 @@ class Ingreso(models.Model):
     class Meta:
         unique_together = ('pedido',)  # Garantiza que solo haya un ingreso por pedido   
 
-
 class Gasto(models.Model):
     Importe = models.IntegerField()
     Fecha = models.DateTimeField()

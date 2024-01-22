@@ -20,6 +20,14 @@ urlpatterns = [
     path('empleados/<int:id>/eliminar_empleados/', views.eliminar_empleados, name='eliminar_empleados'),
     path('empleados/<int:id>/modificar_empleados/', views.modificar_empleados, name='modificar_empleados'),
 
+    path('contabilidad/ingresos', views.ingresos, name='ingresos'),
+    path('contabilidad/ingresos/crear_ingreso', views.crear_ingreso, name='crear_ingresos'),
+    path('contabilidad/ingresos/<int:id>/eliminar_ingresos/', views.eliminar_ingreso, name='eliminar_ingresos'),
+    path('contabilidad/ingresos/<int:id>/modificar_ingresos/', views.modificar_ingreso, name='modificar_ingresos'),
+
+    #path('contabilidad/eliminar_ingreso', views.eliminar_ingreso, name='eliminar_ingresos'),
+    #path('contabilidad/modificar_ingreso', views.modificar_ingreso, name='modificar_ingresos'),
+
     #path('empleados/eliminar_empleado', views.eliminar_empleado, name='eliminar_empleados'),
     #path('empleados/modificar_empleado', views.modificar_empleado, name='modificar_empleados'),
     
@@ -33,10 +41,7 @@ urlpatterns = [
     path('contabilidad/crear_contabilidad', views.crear_contabilidad, name='crear_contabilidad'),
     path('contabilidad/eliminar_contabilidad', views.eliminar_contabilidad, name='eliminar_contabilidad'),
     path('contabilidad/modificar_contabilidad', views.modificar_contabilidad, name='modificar_contabilidad'),
-    path('contabilidad/ingresos', views.ingresos, name='ingresos'),
-    path('contabilidad/crear_ingreso', views.crear_ingreso, name='crear_ingresos'),
-    path('contabilidad/eliminar_ingreso', views.eliminar_ingreso, name='eliminar_ingresos'),
-    path('contabilidad/modificar_ingreso', views.modificar_ingreso, name='modificar_ingresos'),
+    
     path('contabilidad/gastos', views.gastos, name='gastos'),
     path('contabilidad/crear_gasto', views.crear_gasto, name='crear_gastos'),
     path('contabilidad/eliminar_gasto', views.eliminar_gasto, name='eliminar_gastos'),
