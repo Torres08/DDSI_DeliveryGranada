@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.urls import reverse
 from django.views.decorators.http import require_POST
+from django.db.models import Sum
 
 def home(request):
    return render(request, "home.html")
@@ -151,7 +152,11 @@ def modificar_empleados(request,id):
 
 def ingresos(request):
     ingresos = Ingreso.objects.all()
-    return render(request, 'contabilidad/ingreso/ingresos.html', {'ingresos': ingresos})
+    hola_mundo = "¡Hola, Mundo!"
+    #total_ingresos = 5
+    total_ingresos = ingresos.aggregate(Sum('Importe'))['Importe__sum'] or 0  # Calcula la suma de los importes
+        
+    return render(request, 'contabilidad/ingreso/ingresos.html', {'ingresos': ingresos, 'hola_mundo': hola_mundo, 'total_ingresos': total_ingresos})
 
 def crear_ingreso(request):
     form = IngresoForm(request.POST or None)
@@ -185,6 +190,13 @@ def modificar_ingreso(request,id):
             print(form.errors)
 
     return render(request, 'contabilidad/ingreso/modificar_ingresos.html', {'form': form, 'ingresos': ingreso})
+
+
+
+
+
+
+
 
 
 #############################################
