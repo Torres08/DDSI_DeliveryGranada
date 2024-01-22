@@ -68,8 +68,6 @@
 
         <div class="input">
             <a href="{% url 'crear_empleados' %}" class="additional-button">Crear Empleado</a>
-            <a href="{% url 'modificar_empleados' %}" class="additional-button">Modificar Empleado</a>
-            <a href="{% url 'eliminar_empleados' %}" class="additional-button">Eliminar Empleado</a>
             <a href="{% url 'empleados' %}" class="additional-button">Listar Empleados</a>
         </div>
 
@@ -97,6 +95,12 @@
                         <td>{{ trabajador.IBAN }}</td>
                         <td>{{ trabajador.Mail }}</td>
                         <td>{{ trabajador.disponible }}</td>
+                        <td>               
+                            <a href="{% url 'eliminar_empleados' trabajador.id %}" class="additional-button">Eliminar</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'modificar_empleados' trabajador.id %}" class="additional-button">Modificar</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

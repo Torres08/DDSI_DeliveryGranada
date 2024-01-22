@@ -103,8 +103,49 @@ def modificar_restaurantes(request, id):
 
 
 #############################################
+# empleados 
+
+def empleados(request):
+    trabajadores = Employee.objects.all()
+    return render(request, 'empleados/empleados.html', {'trabajadores': trabajadores})
+
+def crear_empleado(request):
+    form = EmpleadoForm(request.POST or None)
+    
+    if form.is_valid():
+        form.save()
+        return redirect('empleados')
+
+    return render(request, 'empleados/crear_empleados.html', {'form': form})
+
+def eliminar_empleados(request, id):
+    empleado = get_object_or_404(Employee, id=id)
+
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            empleado.delete()
+            return redirect('empleados')
+
+    return render(request, 'empleados/eliminar_empleados.html', {'empleados': empleado})
+
+def modificar_empleados(request,id):
+    empleados = get_object_or_404(Employee, id=id)
+    form = EmpleadoForm(request.POST or None, instance=empleados)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('empleados')
+        else:
+            print(form.errors)
+
+    return render(request, 'empleados/modificar_empleados.html', {'form': form, 'empleado': empleados})
 
 
+
+#############################################
 def pedidos(request):
     pedidos = Pedido.objects.all()
     return render(request, 'pedidos/pedidos.html',{'pedidos': pedidos})
@@ -118,24 +159,6 @@ def eliminar_pedido(request):
 def modificar_pedido(request):
     return render(request, 'pedidos/modificarpedidos.html')
 
-def empleados(request):
-    trabajadores = Employee.objects.all()
-    return render(request, 'empleados/empleados.html', {'trabajadores': trabajadores})
-
-def crear_empleado(request):
-    form = EmpleadoForm(request.POST or None)
-    
-    if form.is_valid():
-        form.save()
-        return redirect('empleados')
-
-    return render(request, 'empleados/crearempleados.html', {'form': form})
-
-def eliminar_empleado(request):
-    return render(request, 'empleados/eliminarempleados.html')
-
-def modificar_empleado(request):
-    return render(request, 'empleados/modificarempleados.html')
 
 def contabilidad(request):
     return render(request, 'contabilidad/contabilidad.html')

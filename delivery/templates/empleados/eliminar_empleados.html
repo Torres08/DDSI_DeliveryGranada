@@ -68,11 +68,21 @@
 
         <div class="input">
             <a href="{% url 'crear_empleados' %}" class="additional-button">Crear Empleado</a>
-            <a href="{% url 'modificar_empleados' %}" class="additional-button">Modificar Empleado</a>
-            <a href="{% url 'eliminar_empleados' %}" class="additional-button">Eliminar Empleado</a>
             <a href="{% url 'empleados' %}" class="additional-button">Listar Empleados</a>
         </div>
 
+        <div>
+            <h2>Confirmar Eliminación</h2>
+            <p>¿Estás seguro de que deseas eliminar al usuario "{{ empleados.Nombre }}"?</p>
+            <form method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="confirmacion" value="si" >
+                <button type="submit">Sí, eliminar</button>
+            </form>
+            <a href="{% url 'empleados' %}" class="additional-button">Cancelar</a>
+        </div>
+    
+    <div>
 
 
 </body>

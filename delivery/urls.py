@@ -15,19 +15,20 @@ urlpatterns = [
     path('restaurantes/<int:id>/eliminar_restaurantes/', views.eliminar_restaurantes, name='eliminar_restaurantes'),
     path('restaurantes/<int:id>/modificar_restaurantes/', views.modificar_restaurantes, name='modificar_restaurantes'),
 
-    #path('restaurantes/eliminar_restaurante', views.eliminar_restaurante, name='eliminar_restaurantes'),
-    #path('restaurantes/modificar_restaurante', views.modificar_restaurante, name='modificar_restaurantes'),
-   
+    path('empleados/', views.empleados, name='empleados'),
+    path('empleados/crear_empleado', views.crear_empleado, name='crear_empleados'),
+    path('empleados/<int:id>/eliminar_empleados/', views.eliminar_empleados, name='eliminar_empleados'),
+    path('empleados/<int:id>/modificar_empleados/', views.modificar_empleados, name='modificar_empleados'),
+
+    #path('empleados/eliminar_empleado', views.eliminar_empleado, name='eliminar_empleados'),
+    #path('empleados/modificar_empleado', views.modificar_empleado, name='modificar_empleados'),
     
    
     path('pedidos/', views.pedidos, name='pedidos'),
     path('pedidos/crear_pedido', views.crear_pedido, name='crear_pedidos'),
     path('pedidos/eliminar_pedido', views.eliminar_pedido, name='eliminar_pedidos'),
     path('pedidos/modificar_pedido', views.modificar_pedido, name='modificar_pedidos'),
-    path('empleados/', views.empleados, name='empleados'),
-    path('empleados/crear_empleado', views.crear_empleado, name='crear_empleados'),
-    path('empleados/eliminar_empleado', views.eliminar_empleado, name='eliminar_empleados'),
-    path('empleados/modificar_empleado', views.modificar_empleado, name='modificar_empleados'),
+    
     path('contabilidad/', views.contabilidad, name='contabilidad'),
     path('contabilidad/crear_contabilidad', views.crear_contabilidad, name='crear_contabilidad'),
     path('contabilidad/eliminar_contabilidad', views.eliminar_contabilidad, name='eliminar_contabilidad'),
