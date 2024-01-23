@@ -7,7 +7,6 @@ from .models import Pedido, Cliente, Usuario, Restaurante, Menu, Producto, Emplo
 admin.site.register(Cliente)
 admin.site.register(Usuario)
 admin.site.register(Restaurante)
-#admin.site.register(Employee)
 admin.site.register(Worktime)
 admin.site.register(Rating)
 admin.site.register(Ingreso)
@@ -24,8 +23,6 @@ class MenuAdmin(admin.ModelAdmin):
 
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Producto)
-
-
 
 class DetallePedidoInline(admin.TabularInline):
     model = DetallePedido

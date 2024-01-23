@@ -64,13 +64,14 @@
 
         <div class="input">
             <a href="{% url 'crear_gastos' %}" class="additional-button">Crear Gasto</a>
-            <a href="{% url 'modificar_gastos' %}" class="additional-button">Modificar Gasto</a>
-            <a href="{% url 'eliminar_gastos' %}" class="additional-button">Eliminar Gasto</a>
             <a href="{% url 'gastos' %}" class="additional-button">Listar Gastos</a>
         </div>
 
         <div>
             <h2>Lista de Gastos</h2>
+            <p>Total Ingresos: {{ total_ingresos }}</p>
+            <p>Total Gastos: {{ total_gastos }}</p>
+            <p>Beneficios: {{ balance }}</p>
             <table class="table">
                 <thead>
                     <th>ID</th>
@@ -82,11 +83,17 @@
                 <tbody>
                     {% for gasto in gastos %}
                     <tr>
-                        <td>{{ ingreso.id }}</td>
-                        <td>{{ ingreso.Importe }}</td>
-                        <td>{{ ingreso.Fecha }}</td>
-                        <td>{{ ingreso.Comentario }}</td>
-                        <td>{{ ingreso.employee_id }}</td>
+                        <td>{{ gasto.id }}</td>
+                        <td>{{ gasto.Importe }}</td>
+                        <td>{{ gasto.Fecha }}</td>
+                        <td>{{ gasto.comentario }}</td>
+                        <td>{{ gasto.employee_id }}</td>
+                        <td>
+                            <a href="{% url 'eliminar_gastos' gasto.id %}" class="additional-button">Eliminar</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'modificar_gastos' gasto.id %}" class="additional-button">Modificar</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -195,6 +195,51 @@ def modificar_ingreso(request,id):
 
     return render(request, 'contabilidad/ingreso/modificar_ingresos.html', {'form': form, 'ingresos': ingreso})
 
+def gastos(request):
+    gastos = Gasto.objects.all()
+    ingresos = Ingreso.objects.all()
+
+    total_ingresos = ingresos.aggregate(Sum('Importe'))['Importe__sum'] or 0  # Calcula la suma de los importes
+    total_gastos = gastos.aggregate(Sum('Importe'))['Importe__sum'] or 0  # Calcula la suma de los importes
+    
+    balance = total_ingresos - total_gastos
+    return render(request, 'contabilidad/gasto/gastos.html',{'gastos': gastos,'total_ingresos': total_ingresos, 'total_gastos': total_gastos, 'balance': balance})
+
+def crear_gasto(request):
+    form = GastoForm(request.POST or None)
+    
+    if form.is_valid():
+        form.save()
+        return redirect('gastos')
+    return render(request, 'contabilidad/gasto/creargasto.html',{'form': form})
+
+def eliminar_gasto(request,id):
+    gasto = get_object_or_404(Gasto, id=id)
+
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            gasto.delete()
+            return redirect('gastos')
+
+    return render(request, 'contabilidad/gasto/eliminar_gastos.html', {'gastos': gasto})
+
+
+def modificar_gasto(request,id):
+    gasto = get_object_or_404(Gasto, id=id)
+    form = GastoForm(request.POST or None, instance=gasto)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('gastos')
+        else:
+            print(form.errors)
+
+    return render(request, 'contabilidad/gasto/modificar_gastos.html', {'form': form, 'gastos': gasto})
+
+
 
 #############################################
 
@@ -226,29 +271,6 @@ def modificar_contabilidad(request):
 
 
 
-def gastos(request):
-    gastos = Gasto.objects.all()
-    ingresos = Ingreso.objects.all()
-
-    total_ingresos = ingresos.aggregate(Sum('Importe'))['Importe__sum'] or 0  # Calcula la suma de los importes
-    total_gastos = gastos.aggregate(Sum('Importe'))['Importe__sum'] or 0  # Calcula la suma de los importes
-    
-    balance = total_ingresos - total_gastos
-    return render(request, 'contabilidad/gasto/gastos.html',{'gastos': gastos, 'total_gastos': total_gastos, 'balance': balance})
-
-def crear_gasto(request):
-    form = GastoForm(request.POST or None)
-    
-    if form.is_valid():
-        form.save()
-        return redirect('gastos')
-    return render(request, 'contabilidad/gasto/creargasto.html',{'form': form})
-
-def eliminar_gasto(request):
-    return render(request, 'contabilidad/gasto/eliminargasto.html')
-
-def modificar_gasto(request):
-    return render(request, 'contabilidad/gasto/modificargasto.html')
 
 def clientes(request):
     form = ClienteForm()  # Mueve la definición de form aquí

@@ -43,7 +43,10 @@ class IngresoForm(forms.ModelForm):
 class GastoForm(forms.ModelForm):
     class Meta:
         model = Gasto
-        fields = ['Importe', 'Fecha', 'comentario']
+        fields = ['Importe', 'Fecha', 'comentario', 'employee']
+        widgets = {
+            'Fecha': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
 
 class ClienteForm(forms.ModelForm):
     class Meta:

@@ -68,11 +68,16 @@
 
         <div class="input">
             <a href="{% url 'crear_gastos' %}" class="additional-button">Crear Gasto</a>
-            <a href="{% url 'modificar_gastos' %}" class="additional-button">Modificar Gasto</a>
-            <a href="{% url 'eliminar_gastos' %}" class="additional-button">Eliminar Gasto</a>
             <a href="{% url 'gastos' %}" class="additional-button">Listar Gastos</a>
         </div>
+    
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Guardar Cambios</button>
+        </form>
 
+    </div>
 
 
 </body>
