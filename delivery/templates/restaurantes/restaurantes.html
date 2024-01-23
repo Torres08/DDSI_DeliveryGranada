@@ -21,12 +21,6 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
-            
-            <li class="list_item list_item--click">
-                <div class="list_button">
-                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
-                </div>
-            </li>
 
             <li class="list_item list_item--click">
                 <div class="list_button">
@@ -70,8 +64,6 @@
 
         <div class="input">
             <a href="{% url 'crear_restaurantes' %}" class="additional-button">Crear Restaurante</a>
-            <a href="{% url 'modificar_restaurantes' %}" class="additional-button">Modificar Restaurante</a>
-            <a href="{% url 'eliminar_restaurantes' %}" class="additional-button">Eliminar Restaurante</a>
             <a href="{% url 'restaurantes' %}" class="additional-button">Listar Restaurantes</a>
         </div>
 
@@ -97,6 +89,15 @@
                         <td>{{ restaurante.NRC }}</td>
                         <td>{{ restaurante.Empleados }}</td>
                         <td>{{ restaurante.Propietario }}</td>
+                        <td>
+                            <a href="{% url 'menu' restaurante.id %}" class="additional-button">Menú</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'eliminar_restaurantes' restaurante.id %}" class="additional-button">Eliminar</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'modificar_restaurantes' restaurante.id %}" class="additional-button">Modificar</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

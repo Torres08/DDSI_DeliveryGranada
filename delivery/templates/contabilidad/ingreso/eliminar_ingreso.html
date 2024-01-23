@@ -8,11 +8,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/listar_tabla.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/eliminar.css' %}">
 
 </head>
 <body>
 
+    <!-- Barra de navegación -->
+    
     <nav class="nav">
         <ul class="list">
             <li class="list_item list_item--click">
@@ -20,7 +22,7 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
-
+        
             <li class="list_item list_item--click">
                 <div class="list_button">
                     <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
@@ -57,15 +59,28 @@
 
         </ul>
     </nav>
+       
     
+    <!-- Contenido -->
+
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'ingresos' %}" class="additional-button">Ingresos</a>
-            <a href="{% url 'gastos' %}" class="additional-button">Gastos</a>
+            <a href="{% url 'crear_ingresos' %}" class="additional-button">Crear Ingreso</a>
+            <a href="{% url 'ingresos' %}" class="additional-button">Listar Ingresos</a>
         </div>
-
-       
+        
+        <div>
+            <h2>Confirmar Eliminación</h2>
+            <p>¿Estás seguro de que deseas eliminar al ingreso "{{ ingreso.id }}"?</p>
+            <form method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="confirmacion" value="si" >
+                <button type="submit">Sí, eliminar</button>
+            </form>
+            <a href="{% url 'ingresos' %}" class="additional-button">Cancelar</a>
+        </div>
+    </div>
 
 </body>
 </html>

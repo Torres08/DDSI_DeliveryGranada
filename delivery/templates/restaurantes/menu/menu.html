@@ -4,15 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delivery Granada</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/listar_tabla.css' %}">
-
 </head>
+
 <body>
 
+    <!-- Barra de navegación -->
+    
     <nav class="nav">
         <ul class="list">
             <li class="list_item list_item--click">
@@ -55,17 +56,42 @@
             </li>
 
 
+
         </ul>
     </nav>
-    
-    <div class="content">
 
         <div class="input">
-            <a href="{% url 'ingresos' %}" class="additional-button">Ingresos</a>
-            <a href="{% url 'gastos' %}" class="additional-button">Gastos</a>
+            <a href="{% url 'añadir_producto' restaurante_id=restaurante.id %}" class="additional-button">Añadir Producto</a>
         </div>
 
-       
+
+        <div class="content">
+            <h2>Detalles del Menú</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.id }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.descripcion }}</td>
+                            <td>{{ producto.precio }}</td>
+                            <td>
+                                <a href="{% url 'eliminar_producto' producto.id %}" class="additional-button">Eliminar</a>
+                                <a href="{% url 'modificar_producto' producto.id %}" class="additional-button">Modificar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
 </body>
 </html>

@@ -8,11 +8,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/listar_tabla.css' %}">
 
 </head>
 <body>
 
+    <!-- Barra de navegación -->
+    
     <nav class="nav">
         <ul class="list">
             <li class="list_item list_item--click">
@@ -20,7 +21,7 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
-
+        
             <li class="list_item list_item--click">
                 <div class="list_button">
                     <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
@@ -57,15 +58,25 @@
 
         </ul>
     </nav>
+
+    <div class="input">
+        <a href="{% url 'crear_menu' %}" class="additional-button">Crear Menú</a>
+    </div>
+
+    <h2>Crear Menu</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
     
-    <div class="content">
+    <label for="restaurante">Restaurante:</label>
+    <select name="restaurante" id="restaurante">
+        {% for restaurante in restaurantes %}
+            <option value="{{ restaurante.id }}">{{ restaurante.Nombre }}</option>
+        {% endfor %}
+    </select>
 
-        <div class="input">
-            <a href="{% url 'ingresos' %}" class="additional-button">Ingresos</a>
-            <a href="{% url 'gastos' %}" class="additional-button">Gastos</a>
-        </div>
-
-       
+    <button type="submit">Crear Menu</button>
+</form>
 
 </body>
 </html>

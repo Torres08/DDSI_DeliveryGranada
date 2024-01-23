@@ -60,12 +60,11 @@
         </ul>
     </nav>
     
+
     <div class="content">
 
         <div class="input">
             <a href="{% url 'crear_ingresos' %}" class="additional-button">Crear Ingreso</a>
-            <a href="{% url 'modificar_ingresos' %}" class="additional-button">Modificar Ingreso</a>
-            <a href="{% url 'eliminar_ingresos' %}" class="additional-button">Eliminar Ingreso</a>
             <a href="{% url 'ingresos' %}" class="additional-button">Listar Ingresos</a>
         </div>
 
@@ -85,8 +84,14 @@
                         <td>{{ ingreso.id }}</td>
                         <td>{{ ingreso.Importe }}</td>
                         <td>{{ ingreso.Fecha }}</td>
-                        <td>{{ ingreso.Comentario }}</td>
+                        <td>{{ ingreso.comentario }}</td>
                         <td>{{ ingreso.pedido_id }}</td>
+                        <td>
+                            <a href="{% url 'eliminar_ingresos' ingreso.id %}" class="additional-button">Eliminar</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'modificar_ingresos' ingreso.id %}" class="additional-button">Modificar</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

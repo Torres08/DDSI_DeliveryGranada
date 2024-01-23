@@ -9,69 +9,142 @@ from django.urls import reverse
 def home(request):
    return render(request, "home.html")
 
-
+# usuario
 def usuario(request):
     usuarios = Usuario.objects.all()
     return render(request, 'usuarios/usuarios.html', {'usuarios': usuarios})
 
 def crear_usuario(request):
-
     form = UsuarioForm(request.POST or None)
     
-    if form.is_valid():
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('usuarios')
+        else:
+            print(form.errors)
 
-        form.save()
-        return redirect('usuario')
-
-    return render(request, 'usuarios/crearusuarios.html', {'form' : form})
+    return render(request, 'usuarios/crear_usuarios.html', {'form': form})
 
 def modificar_usuario(request, id):
-    #usuario = usuario.objects.get(id=id)
-    #form = UsuarioForm(request.POST or None)
-    return render(request, 'usuarios/modificarusuarios.html') #{'form' : form})
+    usuario = get_object_or_404(Usuario, id=id)
+    form = UsuarioForm(request.POST or None, instance=usuario)
 
-def eliminar_usuario(request, id):
-    usuario = Usuario.objects.get(id=id)
-    usuario.delete()
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('usuarios')
+        else:
+            print(form.errors)
 
-    return redirect('usuario')
+    return render(request, 'usuarios/modificar_usuarios.html', {'form': form, 'usuario': usuario})
 
-def listar_usuarios(request):
-    usuarios = Usuario.objects.all()
-    return render(request, 'usuarios/usuarios.html', {'usuarios': usuarios})
+def eliminar_usuarios(request, id):
+    usuario = get_object_or_404(Usuario, id=id)
 
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            usuario.delete()
+            return redirect('usuarios')
+
+    return render(request, 'usuarios/eliminar_usuarios.html', {'usuario': usuario})
+
+#############################################
+
+# restaurante
 def restaurante(request):
     restaurantes = Restaurante.objects.all()
     return render(request, 'restaurantes/restaurantes.html', {'restaurantes': restaurantes})
 
 def crear_restaurante(request):
-
     form = RestauranteForm(request.POST or None)
     
-    if form.is_valid():
-        form.save()
-        return redirect('restaurante')
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('restaurantes')
+        else:
+            print(form.errors)
 
-    return render(request, 'restaurantes/crearrestaurantes.html', {'form' : form})
+    return render(request, 'restaurantes/crear_restaurantes.html', {'form': form})
 
-def eliminar_restaurante(request):
-    return render(request, 'restaurantes/eliminarrestaurantes.html')
+def eliminar_restaurantes(request):
+    restaurante = get_object_or_404(Restaurante, id=id)
 
-def modificar_restaurante(request):
-    return render(request, 'restaurantes/modificarrestaurantes.html')
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            restaurante.delete()
+            return redirect('restaurantes')
+
+    return render(request, 'restaurantes/eliminar_restaurantes.html', {'restaurantes': restaurante})
+
+def modificar_restaurantes(request):
+    restaurante = get_object_or_404(Restaurante, id=id)
+    form = RestauranteForm(request.POST or None, instance=restaurante)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('restaurantes')
+        else:
+            print(form.errors)
+
+    return render(request, 'restaurantes/modificar_restaurantes.html', {'form': form, 'restaurante': restaurante})
+
+#############################################
+# pedidos
 
 def pedidos(request):
     pedidos = Pedido.objects.all()
     return render(request, 'pedidos/pedidos.html',{'pedidos': pedidos})
 
 def crear_pedido(request):
-    return render(request, 'pedidos/crearpedidos.html')
+    productos_cantidad_formset = None  # Inicializar la variable fuera del bloque condicional
 
-def eliminar_pedido(request):
-    return render(request, 'pedidos/eliminarpedidos.html')
+    if request.method == 'POST':
+        form = PedidoForm(request.POST)
+        if form.is_valid():
+            pedido = form.save()
+            productos_cantidad_formset = ProductoCantidadFormSet(request.POST, instance=pedido, prefix='productos_cantidad')
+            if productos_cantidad_formset.is_valid():
+                productos_cantidad_formset.save()
+                return redirect('pedidos')  # Reemplaza 'lista_pedidos' con el nombre de tu vista de lista de pedidos
+    else:
+        form = PedidoForm()
 
-def modificar_pedido(request):
-    return render(request, 'pedidos/modificarpedidos.html')
+    return render(request, 'pedidos/crear_pedidos.html', {'form': form, 'productos_cantidad_formset': productos_cantidad_formset}) 
+
+def eliminar_pedidos(request, id):
+    pedido = get_object_or_404(Pedido, id=id)
+
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            pedido.delete()
+            return redirect('pedidos')
+
+    return render(request, 'pedidos/eliminar_pedidos.html', {'pedidos': pedido})
+
+def modificar_pedido(request, id):
+    pedidos = get_object_or_404(Pedido, id=id)
+    form = PedidoForm(request.POST or None, instance=pedidos)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('pedidos')
+        else:
+            print(form.errors)
+
+    return render(request, 'pedidos/modificar_pedidos.html', {'form': form, 'pedidos': pedidos})
+
+#############################################
+# empleados 
 
 def empleados(request):
     trabajadores = Employee.objects.all()
@@ -84,25 +157,41 @@ def crear_empleado(request):
         form.save()
         return redirect('empleados')
 
-    return render(request, 'empleados/crearempleados.html', {'form': form})
+    return render(request, 'empleados/crear_empleados.html', {'form': form})
 
-def eliminar_empleado(request):
-    return render(request, 'empleados/eliminarempleados.html')
+def eliminar_empleados(request, id):
+    empleado = get_object_or_404(Employee, id=id)
 
-def modificar_empleado(request):
-    return render(request, 'empleados/modificarempleados.html')
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            empleado.delete()
+            return redirect('empleados')
+
+    return render(request, 'empleados/eliminar_empleados.html', {'empleados': empleado})
+
+def modificar_empleados(request,id):
+    empleados = get_object_or_404(Employee, id=id)
+    form = EmpleadoForm(request.POST or None, instance=empleados)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('empleados')
+        else:
+            print(form.errors)
+
+    return render(request, 'empleados/modificar_empleados.html', {'form': form, 'empleados': empleados})
+
+#############################################
+
+#contabilidad
 
 def contabilidad(request):
     return render(request, 'contabilidad/contabilidad.html')
 
-def crear_contabilidad(request):
-    return render(request, 'contabilidad/crearcontabilidad.html')
-
-def eliminar_contabilidad(request):
-    return render(request, 'contabilidad/eliminarcontabilidad.html')
-
-def modificar_contabilidad(request):
-    return render(request, 'contabilidad/modificarcontabilidad.html')
+# ingreso
 
 def ingresos(request):
     ingresos = Ingreso.objects.all()
@@ -114,13 +203,34 @@ def crear_ingreso(request):
     if form.is_valid():
         form.save()
         return redirect('ingresos')
-    return render(request, 'contabilidad/ingreso/crearingreso.html', {'form': form})
+    return render(request, 'contabilidad/ingreso/crear_ingreso.html', {'form': form})
 
-def eliminar_ingreso(request):
-    return render(request, 'contabilidad/ingreso/eliminaringreso.html')
+def eliminar_ingreso(request,id):
+    ingreso = get_object_or_404(Ingreso, id=id)
 
-def modificar_ingreso(request):
-    return render(request, 'contabilidad/ingreso/modificaringreso.html')
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            ingreso.delete()
+            return redirect('ingresos')
+
+    return render(request, 'contabilidad/ingreso/eliminar_ingreso.html', {'ingresos': ingreso})
+
+def modificar_ingreso(request,id):
+    ingreso = get_object_or_404(Ingreso, id=id)
+    form = IngresoForm(request.POST or None, instance=ingreso)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('ingresos')
+        else:
+            print(form.errors)
+
+    return render(request, 'contabilidad/ingreso/modificar_ingresos.html', {'form': form, 'ingresos': ingreso})
+
+# gasto
 
 def gastos(request):
     gastos = Gasto.objects.all()
@@ -132,86 +242,117 @@ def crear_gasto(request):
     if form.is_valid():
         form.save()
         return redirect('gastos')
-    return render(request, 'contabilidad/gasto/creargasto.html',{'form': form})
+    return render(request, 'contabilidad/gasto/crear_gasto.html',{'form': form})
 
-def eliminar_gasto(request):
-    return render(request, 'contabilidad/gasto/eliminargasto.html')
-
-def modificar_gasto(request):
-    return render(request, 'contabilidad/gasto/modificargasto.html')
-
-def clientes(request):
-    form = ClienteForm()  # Mueve la definición de form aquí
+def eliminar_gasto(request, id):
+    gasto = get_object_or_404(Gasto, id=id)
 
     if request.method == 'POST':
-        accion = request.POST.get('accion')
-        if accion == 'crear':
-            form = ClienteForm(request.POST)
-            if form.is_valid():
-                nuevo_cliente = form.save()
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            gasto.delete()
+            return redirect('gastos')
 
-                # Devolver los datos del cliente como JSON
-                data_cliente = {
-                    'id': nuevo_cliente.id,
-                    'nombre': nuevo_cliente.Nombre,
-                    'telefono': nuevo_cliente.Telefono,
-                    'direccion': nuevo_cliente.Direccion,
-                }
-                print(data_cliente)
-                
-                return JsonResponse({'cliente': data_cliente})
-            else:
-                # Devolver errores del formulario
-                return JsonResponse({'error': form.errors}, status=400)
-            
-        elif accion == 'eliminar':
-            form = EliminaClienteForm(request.POST)
-            print(form.data)
-            if form.is_valid():
+    return render(request, 'contabilidad/gasto/eliminar_gasto.html', {'gastos': gasto})
 
-                nombre_cliente = form.cleaned_data['Nombre']
+def modificar_gasto(request, id):
+    gasto = get_object_or_404(Gasto, id=id)
+    form = GastoForm(request.POST or None, instance=gasto)
 
-                # Eliminar el cliente
-                Cliente.objects.get(Nombre=nombre_cliente).delete()
-                
-                return JsonResponse({'eliminado': True})
-                
-            else:
-                # Devolver errores del formulario
-                return JsonResponse({'error': form.errors}, status=400)
-        
-        elif accion == 'modificar':
-            form = ModificarClienteForm(request.POST)
-            print(form.data)
-            
-            if form.is_valid():
-            
-                nombre_cliente = form.cleaned_data['Nombre']
-                print(nombre_cliente)
-                # Aquí debes identificar el cliente que deseas modificar
-                try:
-                    cliente_a_modificar = Cliente.objects.get(Nombre=nombre_cliente)
-                except Cliente.DoesNotExist:
-                    return JsonResponse({'error': 'El cliente no existe'}, status=400)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('gastos')
+        else:
+            print(form.errors)
 
-                # Actualiza los atributos del cliente con los nuevos valores del formulario
-                cliente_a_modificar.Nombre = form.cleaned_data['NuevoNombre']  # Ajusta según tu formulario
-                cliente_a_modificar.Telefono = form.cleaned_data['NuevoTelefono']
-                cliente_a_modificar.Direccion = form.cleaned_data['NuevaDireccion']
-                
-                # Guarda los cambios en la base de datos
-                cliente_a_modificar.save()
+    return render(request, 'contabilidad/gasto/modificar_gastos.html', {'form': form, 'gastos': gasto})
 
-                # Devuelve una respuesta JSON indicando que se ha modificado el cliente
-                return JsonResponse({'modificado': True})
-            else:
-                # Devuelve errores del formulario si no es válido
-                print(form.errors)
-                return JsonResponse({'error': form.errors}, status=400)
+#####################################################
 
-    clientes = Cliente.objects.all()
-# views.py
-    lista_clientes = [{'id': cliente.id, 'Nombre': cliente.Nombre, 'telefono': cliente.Telefono, 'direccion': cliente.Direccion} for cliente in clientes]
-        
-    return render(request, 'clientes.html', {'form': form, 'clientes': clientes, 'lista_clientes': lista_clientes})
 
+#menu
+def menu(request, restaurante_id):
+    menu = Menu.objects.filter(restaurante_id=restaurante_id)
+    return render(request, 'restaurantes/menu/menu.html',{'menu': menu})
+
+def crear_menu(request):
+    if request.method == 'POST':
+        form = MenuForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('menu')
+    else:
+        form = MenuForm()
+
+    restaurantes = Restaurante.objects.all()
+
+    return render(request, 'restaurantes/menu/crear_menu.html', {'form': form, 'restaurantes': restaurantes})
+
+def eliminar_menu(request, menu_id):
+    menu = get_object_or_404(Menu, id=menu_id)
+
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            menu.delete()
+            return redirect('detalle_menu')
+
+    return render(request, 'restaurantes/menu/eliminar_menu.html', {'menu': menu})
+
+
+def detalle_menu(request, menu_id):
+    menu = get_object_or_404(Menu, id=menu_id)
+    productos = menu.producto_set.all()  # 'producto_set' es el nombre por defecto para la relación inversa
+
+    return render(request, 'restaurantes/menu/detalle_menu.html', {'menu': menu, 'productos': productos})
+
+#producto
+
+def añadir_producto(request, restaurante_id):
+    restaurante = Restaurante.objects.get(id=restaurante_id)
+
+    if request.method == 'POST':
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            producto = form.save(commit=False)
+            producto.restaurante = restaurante
+            producto.save()
+            return redirect('menu', restaurante_id=restaurante_id)
+    else:
+        form = ProductoForm()
+
+    return render(request, 'restaurantes/menu/añadir_producto.html', {'form': form, 'restaurante': restaurante})
+
+
+def eliminar_producto(request, id):
+    producto = get_object_or_404(Producto, id=id)
+
+    if request.method == 'POST':
+        # Verifica si el usuario ha confirmado el borrado
+        confirmacion = request.POST.get('confirmacion')
+        if confirmacion == 'si':
+            restaurante_id = producto.restaurante.id
+            producto.delete()
+
+            return redirect('menu', restaurante_id=restaurante_id)
+
+    return render(request, 'restaurantes/menu/eliminar_producto.html', {'productos': producto})
+
+def modificar_producto(request, id):
+    producto = get_object_or_404(Producto, id=id)
+    form = ProductoForm(request.POST or None, instance=producto)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+
+            restaurante_id = producto.restaurante.id
+
+            return redirect('menu', restaurante_id=restaurante_id)
+        else:
+            print(form.errors)
+
+    return render(request, 'restaurantes/menu/modificar_producto.html', {'form': form, 'productos': producto})

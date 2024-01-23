@@ -1,0 +1,92 @@
+{% load static %}
+<!-- detalle_menu.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ menu.nombre }}</title>
+</head>
+<body>
+
+        <!-- Barra de navegación -->
+    
+        <nav class="nav">
+            <ul class="list">
+                <li class="list_item list_item--click">
+                    <div class="list_button">
+                        <a href="{% url 'home' %}" class="nav_link">Inicio</a>
+                    </div>
+                </li>
+    
+                <li class="list_item list_item--click">
+                    <div class="list_button">
+                        <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
+                    </div>
+                </li>
+    
+                <li class="list_item list_item--click">
+                    <div class="list_button">
+                        <a href="{% url 'restaurantes' %}" class="nav_link">Restaurantes</a>
+                    </div>
+                </li>
+    
+                <li class="list_item list_item--click">
+                    <div class="list_button">
+                        <a href="{% url 'pedidos' %}" class="nav_link">Pedido</a>
+                </div>
+    
+                <li class="list_item list_item--click">
+                    <div class="list_button">
+                        <a href="{% url 'empleados' %}" class="nav_link">Empleados</a>
+                </div>
+    
+                <li class="list_item list_item--click">
+                    <div class="list_button">
+                        <a href="{% url 'contabilidad' %}" class="nav_link">Contabilidad</a>
+                </div>
+    
+                <li class="list_item list_item--app-name">
+                    <div class="list_button list_button--app-name">
+                        <p class="app_name">Delivery Granada</p>
+                    </div>
+                </li>
+    
+    
+            </ul>
+        </nav>
+
+    <div>
+
+        <div class="input">
+            <a href="{% url 'añadir_producto' %}" class="additional-button">Añadir Producto</a>
+        </div>
+
+
+        <div class="content">
+            <h2>Detalles del Menú</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Restaurante</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.id }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.descripcion }}</td>
+                            <td>{{ producto.precio }}</td>
+                            <td>
+                                <a href="{% url 'eliminar_producto' producto.id %}" class="additional-button">Eliminar</a>
+                                <a href="{% url 'modificar_producto' producto.id %}" class="additional-button">Modificar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+</body>
+</html>

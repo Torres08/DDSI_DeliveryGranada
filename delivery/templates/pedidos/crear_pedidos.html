@@ -8,11 +8,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/listar_tabla.css' %}">
 
 </head>
 <body>
 
+    <!-- Barra de navegación -->
+    
     <nav class="nav">
         <ul class="list">
             <li class="list_item list_item--click">
@@ -20,7 +21,7 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
-
+        
             <li class="list_item list_item--click">
                 <div class="list_button">
                     <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
@@ -57,15 +58,59 @@
 
         </ul>
     </nav>
+       
     
+    <!-- Contenido -->
+
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'ingresos' %}" class="additional-button">Ingresos</a>
-            <a href="{% url 'gastos' %}" class="additional-button">Gastos</a>
+            <a href="{% url 'crear_pedidos' %}" class="additional-button">Crear Pedido</a>
+            <a href="{% url 'pedidos' %}" class="additional-button">Listar Pedidos</a>
         </div>
 
-       
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            {{ productos_cantidad_formset.management_form }}
+            
+            <div id="productos_cantidad_formset">
+                {% for form in productos_cantidad_formset %}
+                    {{ form.as_table }}
+                {% endfor %}
+            </div>
+            
+            <button type="button" id="add_more">Agregar más productos</button>
+            
+            <input type="submit" value="Guardar pedido">
+        </form>
+        
+        {% block extra_scripts %}
+            <script>
+                var formsetPrefix = '{{ productos_cantidad_formset.prefix }}';
+                var formsetTotalForms = '{{ productos_cantidad_formset.total_form_count }}';
+                
+                document.getElementById('add_more').onclick = function() {
+                    var newFormIndex = parseInt(formsetTotalForms);
+                    var formsetContainer = document.getElementById('productos_cantidad_formset');
+                    
+                    var newFormHtml = formsetContainer.innerHTML.replace(/__prefix__/g, newFormIndex);
+                    formsetContainer.insertAdjacentHTML('beforeend', newFormHtml);
+                    
+                    // Actualizar el total de formularios en el formset
+                    formsetTotalForms++;
+                    document.getElementById(formsetPrefix + '-TOTAL_FORMS').value = formsetTotalForms;
+                };
+            </script>
+        {% endblock %}
+        
+
+    </div>
+
+
+
+
 
 </body>
 </html>

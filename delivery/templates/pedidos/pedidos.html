@@ -22,12 +22,6 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
-            
-            <li class="list_item list_item--click">
-                <div class="list_button">
-                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
-                </div>
-            </li>
 
             <li class="list_item list_item--click">
                 <div class="list_button">
@@ -72,8 +66,6 @@
 
         <div class="input">
             <a href="{% url 'crear_pedidos' %}" class="additional-button">Crear Pedido</a>
-            <a href="{% url 'modificar_pedidos' %}" class="additional-button">Modificar Pedido</a>
-            <a href="{% url 'eliminar_pedidos' %}" class="additional-button">Eliminar Pedido</a>
             <a href="{% url 'pedidos' %}" class="additional-button">Listar Pedidos</a>
         </div>
 
@@ -84,7 +76,6 @@
                     <th>ID</th>
                     <th>Estado</th>
                     <th>Fecha de Creación</th>
-                    <th>Precio Total</th>
                 </thead>
                 <tbody>
                     {% for pedido in pedidos %}
@@ -92,7 +83,13 @@
                         <td>{{ pedido.id }}</td>
                         <td>{{ pedido.estado }}</td>
                         <td>{{ pedido.fecha_creacion }}</td>
-                        <td>{{ restaurante.precio_total }}</td>
+                        <td>
+                            <a href="{% url 'eliminar_pedidos' pedido.id %}" class="additional-button">Eliminar</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'modificar_pedidos' pedido.id %}" class="additional-button">Modificar</a>
+                        </td>
+
                     </tr>
                     {% endfor %}
                 </tbody>

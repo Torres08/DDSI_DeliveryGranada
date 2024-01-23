@@ -43,7 +43,7 @@ class Restaurante(Cliente):
         return f"Restaurante {self.Nombre} - {self.id}"
 
 class Menu(models.Model):
-    restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, null=True, related_name='menus')
+    restaurante = models.OneToOneField(Restaurante, null=True, on_delete=models.CASCADE, related_name='menu')
     
     @property
     def menu_name(self):
@@ -118,6 +118,7 @@ class Employee(models.Model):
 # definido: Producto, Pedido, encarga, comunica, asigna
 class Producto(models.Model):
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(null=True)
     precio = models.DecimalField(max_digits=8, decimal_places=2)
@@ -128,9 +129,9 @@ class Producto(models.Model):
 class Pedido(models.Model):
 
     ESTADO_CHOICES = (
-        ('En Preparación', 'En preparación'),
-        ('envio', 'En envío'),
-        ('entregado', 'Entregado'),
+        ('En Preparación', 'En Preparación'),
+        ('En Envío', 'En Envío'),
+        ('Entregado', 'Entregado'),
     )
 
     estado = models.CharField(max_length=40, choices=ESTADO_CHOICES, default='En Preparación')

@@ -1,5 +1,6 @@
 from django import forms
-from .models import Usuario, Employee, Restaurante, Pedido, Ingreso, Gasto, Cliente
+from .models import Usuario, Employee, Restaurante, Pedido, Ingreso, Gasto, Producto, Menu, DetallePedido
+from django.forms import formset_factory, inlineformset_factory
 
 class UsuarioForm(forms.ModelForm):
     class Meta:
@@ -27,10 +28,24 @@ class EmpleadoForm(forms.ModelForm):
         model = Employee
         fields = ['Nombre', 'Apellidos', 'Direccion', 'Telefono', 'IBAN', 'Mail', 'disponible']
 
+#class DetallePedidoForm(forms.ModelForm):
+#    class Meta:
+#        model = DetallePedido
+#        fields = ['producto', 'cantidad']
+
+class DetallePedidoForm(forms.ModelForm):
+    class Meta:
+        model = DetallePedido
+        fields = ['producto', 'cantidad']
+
+ProductoCantidadFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1)
+
 class PedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido
-        fields = ['estado', 'fecha_creacion', 'precio_total']
+        fields = ['estado', 'fecha_creacion', 'usuario']
+
+    productos_cantidad = ProductoCantidadFormSet(instance=Pedido(), prefix='productos_cantidad')   
 
 class IngresoForm(forms.ModelForm):
     class Meta:
@@ -42,18 +57,13 @@ class GastoForm(forms.ModelForm):
         model = Gasto
         fields = ['Importe', 'Fecha', 'comentario']
 
-class ClienteForm(forms.ModelForm):
+class MenuForm(forms.ModelForm):
     class Meta:
-        model = Cliente
-        fields = ['Nombre', 'Telefono', 'Direccion']
+        model = Menu
+        fields = ['restaurante']
 
-class EliminaClienteForm(forms.ModelForm):
+class ProductoForm(forms.ModelForm):
     class Meta:
-        model = Cliente
-        fields = ['Nombre']  
+        model = Producto
+        fields = ['nombre', 'descripcion', 'precio', 'menu']
 
-class ModificarClienteForm(forms.Form):
-    Nombre = forms.CharField(max_length=255)
-    NuevoNombre = forms.CharField(max_length=255)
-    NuevoTelefono = forms.CharField(max_length=9)
-    NuevaDireccion = forms.CharField(max_length=255)

@@ -8,11 +8,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/listar_tabla.css' %}">
 
 </head>
 <body>
 
+    <!-- Barra de navegación -->
+    
     <nav class="nav">
         <ul class="list">
             <li class="list_item list_item--click">
@@ -20,7 +21,7 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
-
+        
             <li class="list_item list_item--click">
                 <div class="list_button">
                     <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
@@ -57,15 +58,24 @@
 
         </ul>
     </nav>
+       
     
+    <!-- Contenido -->
+
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'ingresos' %}" class="additional-button">Ingresos</a>
-            <a href="{% url 'gastos' %}" class="additional-button">Gastos</a>
+            <a href="{% url 'añadir_producto' %}" class="additional-button">Añadir Producto</a>
+            <a href="{% url 'detalle_menu' %}" class="additional-button">Ver Menu</a>
         </div>
-
-       
+    
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Guardar Cambios</button>
+        </form>
+        
+    <div>
 
 </body>
 </html>
