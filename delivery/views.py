@@ -153,7 +153,12 @@ def modificar_empleados(request,id):
 
     return render(request, 'empleados/modificar_empleados.html', {'form': form, 'empleado': empleados})
 
+def ver_rating_worktime(request, empleado_id):
+    empleado = get_object_or_404(Employee, id=empleado_id)
+    ratings = Rating.objects.filter(empleado=empleado)
+    worktimes = Worktime.objects.filter(employee=empleado)
 
+    return render(request, 'empleados/ver_rating_worktime.html', {'empleado': empleado, 'ratings': ratings, 'worktimes': worktimes})
 
 #############################################
 

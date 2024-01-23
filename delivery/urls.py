@@ -20,6 +20,9 @@ urlpatterns = [
     path('empleados/<int:id>/eliminar_empleados/', views.eliminar_empleados, name='eliminar_empleados'),
     path('empleados/<int:id>/modificar_empleados/', views.modificar_empleados, name='modificar_empleados'),
 
+    #
+    path('empleados/ver_rating_worktime/<int:empleado_id>/', views.ver_rating_worktime, name='ver_rating_worktime'),
+
     path('contabilidad/ingresos', views.ingresos, name='ingresos'),
     path('contabilidad/ingresos/crear_ingreso', views.crear_ingreso, name='crear_ingresos'),
     path('contabilidad/ingresos/<int:id>/eliminar_ingresos/', views.eliminar_ingreso, name='eliminar_ingresos'),

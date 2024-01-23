@@ -67,48 +67,60 @@
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'crear_empleados' %}" class="additional-button">Crear Empleado</a>
             <a href="{% url 'empleados' %}" class="additional-button">Listar Empleados</a>
         </div>
 
-        <div>
-            <h2>Lista de Empleados</h2>
+        <div class="worktimes">
+            <h2>Lista de Worktimes</h2>
             <table class="table">
                 <thead>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>IBAN</th>
-                    <th>Mail</th>
-                    <th>Disponible</th>
+                    <tr>
+                        <th>ID</th>
+                        <th>Efficiency</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    {% for trabajador in trabajadores %}
+                    {% for worktime in worktimes %}
                     <tr>
-                        <td>{{ trabajador.id }}</td>
-                        <td>{{ trabajador.Nombre }}</td>
-                        <td>{{ trabajador.Apellidos }}</td>
-                        <td>{{ trabajador.Direccion }}</td>
-                        <td>{{ trabajador.Telefono }}</td>
-                        <td>{{ trabajador.IBAN }}</td>
-                        <td>{{ trabajador.Mail }}</td>
-                        <td>{{ trabajador.disponible }}</td>
-                        <td>               
-                            <a href="{% url 'eliminar_empleados' trabajador.id %}" class="additional-button">Eliminar</a>
-                        </td>
-                        <td>
-                            <a href="{% url 'modificar_empleados' trabajador.id %}" class="additional-button">Modificar</a>
-                        </td>
-                        <td>
-                            <a href="{% url 'ver_rating_worktime' empleado_id=trabajador.id %}" class="additional-button">Ver Rating y Worktime</a>
-                        </td>
+                        <td>{{ worktime.id }}</td>
+                        <td>{{ worktime.efficiency }}</td>
+                        <td>{{ worktime.start_date|date:"Y-m-d H:i:s" }}</td>
+                        <td>{{ worktime.end_date|date:"Y-m-d H:i:s" }}</td>
+                        <!-- Agrega más celdas según sea necesario -->
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+        
+        <hr>
+
+        <div class="ratings">
+            <h2>Lista de Ratings</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Rating</th>
+                        <th>Comentario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rating in ratings %}
+                    <tr>
+                        <td>{{ rating.id }}</td>
+                        <td>{{ rating.rating }}</td>
+                        <td>{{ rating.comentario }}</td>
+                        <!-- Agrega más celdas según sea necesario -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
 
        
     
