@@ -68,11 +68,8 @@
 
         <div class="input">
             <a href="{% url 'crear_usuarios' %}" class="additional-button">Crear Usuario</a>
-            <a href="{% url 'modificar_usuarios' %}" class="additional-button">Modificar Usuario</a>
-            <a href="{% url 'eliminar_usuarios' %}" class="additional-button">Eliminar Usuario</a>
             <a href="{% url 'usuarios' %}" class="additional-button">Listar Usuario</a>
         </div>
-
 
         <form method="POST" enctype="multipart/form-data" class="form">
             {% csrf_token %}

@@ -67,12 +67,21 @@
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'crear_restaurantes' %}" class="additional-button">Crear Restaurante</a>
-            <a href="{% url 'modificar_restaurantes' %}" class="additional-button">Modificar Restaurante</a>
-            <a href="{% url 'eliminar_restaurantes' %}" class="additional-button">Eliminar Restaurante</a>
-            <a href="{% url 'restaurantes' %}" class="additional-button">Listar Restaurantes</a>
+            <a href="{% url 'crear_ingresos' %}" class="additional-button">Crear Ingreso</a>
+            <a href="{% url 'ingresos' %}" class="additional-button">Listar Ingresos</a>
         </div>
-
+        
+        <div>
+            <h2>Confirmar Eliminación</h2>
+            <p>¿Estás seguro de que deseas eliminar al ingreso "{{ ingreso.id }}"?</p>
+            <form method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="confirmacion" value="si" >
+                <button type="submit">Sí, eliminar</button>
+            </form>
+            <a href="{% url 'ingresos' %}" class="additional-button">Cancelar</a>
+        </div>
+    </div>
 
 </body>
 </html>

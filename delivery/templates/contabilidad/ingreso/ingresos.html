@@ -60,7 +60,6 @@
         </ul>
     </nav>
     
-
     <div class="content">
 
         <div class="input">
@@ -70,20 +69,24 @@
 
         <div>
             <h2>Lista de Ingresos</h2>
+            <p>Total Ingresos: {{ total_ingresos }}</p>
             <table class="table">
                 <thead>
-                    <th>ID</th>
-                    <th>Importe</th>
-                    <th>Fecha</th>
-                    <th>Comentario</th>
-                    <th>ID Pedido</th>
+                    <tr>
+                        <th>ID</th>
+                        <th>Importe</th>
+                        <th>Fecha</th>
+                        <th>Comentario</th>
+                        <th>ID Pedido</th>
+                        <th>Acciones</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {% for ingreso in ingresos %}
                     <tr>
                         <td>{{ ingreso.id }}</td>
                         <td>{{ ingreso.Importe }}</td>
-                        <td>{{ ingreso.Fecha }}</td>
+                        <td>{{ ingreso.Fecha|date:"Y-m-d H:i:s" }}</td>
                         <td>{{ ingreso.comentario }}</td>
                         <td>{{ ingreso.pedido_id }}</td>
                         <td>
@@ -97,8 +100,13 @@
                 </tbody>
             </table>
         </div>
+        
+    
+       
+    
+    </div>
 
-
+   
        
     
 

@@ -21,6 +21,12 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
+            
+            <li class="list_item list_item--click">
+                <div class="list_button">
+                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
+                </div>
+            </li>
 
             <li class="list_item list_item--click">
                 <div class="list_button">
@@ -89,9 +95,6 @@
                         <td>{{ restaurante.NRC }}</td>
                         <td>{{ restaurante.Empleados }}</td>
                         <td>{{ restaurante.Propietario }}</td>
-                        <td>
-                            <a href="{% url 'menu' restaurante.id %}" class="additional-button">Menú</a>
-                        </td>
                         <td>
                             <a href="{% url 'eliminar_restaurantes' restaurante.id %}" class="additional-button">Eliminar</a>
                         </td>
