@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'DeliveryGranada.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'deliverydb',
-            'USER': 'root',
+            'NAME': 'deliveryDB',
+            'USER': 'marioillan',
             'PASSWORD': 'practicas',
             'HOST': 'localhost',
-            'PORT': '3307',
+            'PORT': '3306',
         }
     }
 

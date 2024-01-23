@@ -8,8 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
-
-    <script src="{% static 'js/funcionalidad_clientes.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/eliminar.css' %}">
 
 </head>
 <body>
@@ -79,9 +78,10 @@
                 <input type="hidden" name="confirmacion" value="si" >
                 <button type="submit">Sí, eliminar</button>
             </form>
-            <a href="{% url 'usuarios' %}" class="additional-button">Cancelar</a>
+            <a href="{% url 'usuarios' %}" class="cancel-button">Cancelar</a>
         </div>
-    </div>    
+    </div>   
+
 
 </body>
 </html>

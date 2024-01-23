@@ -50,10 +50,7 @@ class PedidoForm(forms.ModelForm):
 class IngresoForm(forms.ModelForm):
     class Meta:
         model = Ingreso
-        fields = ['Importe', 'Fecha', 'comentario', 'pedido']
-        widgets = {
-            'Fecha': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-        }
+        fields = ['Importe', 'Fecha', 'comentario']
 
 class GastoForm(forms.ModelForm):
     class Meta:
