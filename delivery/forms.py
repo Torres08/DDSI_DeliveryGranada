@@ -30,7 +30,7 @@ class EmpleadoForm(forms.ModelForm):
 class PedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido
-        fields = ['estado', 'fecha_creacion', 'precio_total']
+        fields = ['estado', 'fecha_creacion', 'precio_total', 'restaurante', 'productos', 'repartidor', 'usuario']
 
 class IngresoForm(forms.ModelForm):
     class Meta:

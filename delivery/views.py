@@ -102,6 +102,15 @@ def modificar_restaurantes(request, id):
 
     return render(request, 'restaurantes/modificar_restaurantes.html', {'form': form, 'restaurante': restaurante})
 
+def ver_menu_restaurante(request, id):
+    # Obtener el restaurante por su ID o mostrar una página de error 404 si no se encuentra
+    restaurante = get_object_or_404(Restaurante, id=id)
+
+    # Obtener todos los productos asociados a este restaurante
+    productos = Producto.objects.filter(menu__restaurante=restaurante)
+
+    return render(request, 'restaurantes/menu.html', {'restaurante': restaurante, 'productos': productos})
+
 
 #############################################
 # empleados 
@@ -245,7 +254,13 @@ def modificar_gasto(request,id):
 
 def pedidos(request):
     pedidos = Pedido.objects.all()
-    return render(request, 'pedidos/pedidos.html',{'pedidos': pedidos})
+
+    for pedido in pedidos:
+        detalles_pedido = DetallePedido.objects.filter(pedido=pedido)
+        total_price = sum(detalle.precio_total() for detalle in detalles_pedido)
+        pedido.total_price = total_price
+    
+    return render(request, 'pedidos/pedidos.html', {'pedidos': pedidos})
 
 def crear_pedido(request):
     return render(request, 'pedidos/crearpedidos.html')

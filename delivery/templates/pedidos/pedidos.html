@@ -71,12 +71,9 @@
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'crear_pedidos' %}" class="additional-button">Crear Pedido</a>
-            <a href="{% url 'modificar_pedidos' %}" class="additional-button">Modificar Pedido</a>
-            <a href="{% url 'eliminar_pedidos' %}" class="additional-button">Eliminar Pedido</a>
             <a href="{% url 'pedidos' %}" class="additional-button">Listar Pedidos</a>
         </div>
-
+    
         <div>
             <h2>Lista de Pedidos</h2>
             <table class="table">
@@ -84,21 +81,39 @@
                     <th>ID</th>
                     <th>Estado</th>
                     <th>Fecha de Creación</th>
+                    <th>Restaurantes</th>
+                    <th>Productos</th>
                     <th>Precio Total</th>
+                    <th>Usuario</th>
                 </thead>
                 <tbody>
                     {% for pedido in pedidos %}
-                    <tr>
-                        <td>{{ pedido.id }}</td>
-                        <td>{{ pedido.estado }}</td>
-                        <td>{{ pedido.fecha_creacion }}</td>
-                        <td>{{ restaurante.precio_total }}</td>
-                    </tr>
+                        <tr>
+                            <td>{{ pedido.id }}</td>
+                            <td>{{ pedido.estado }}</td>
+                            <td>{{ pedido.fecha_creacion }}</td>
+                            <td>{{ pedido.restaurante }}</td>
+                            <td>
+                                {% for producto in pedido.productos.all %}
+                                    {{ producto.nombre }},
+                                    {{ producto.precio }}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                ${{ pedido.total_price }}
+                            </td>
+                            
+                            
+                            
+                            <td>{{ pedido.usuario }}</td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-
+    </div>
+    
+    
 
 
 

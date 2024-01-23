@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Granada</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/listar_tabla.css' %}">
-</head>
 
+</head>
 <body>
 
     <!-- Barra de navegación -->
@@ -21,13 +22,7 @@
                     <a href="{% url 'home' %}" class="nav_link">Inicio</a>
                 </div>
             </li>
-            
-            <li class="list_item list_item--click">
-                <div class="list_button">
-                    <a href="{% url 'clientes' %}" class="nav_link">Cliente</a>
-                </div>
-            </li>
-
+        
             <li class="list_item list_item--click">
                 <div class="list_button">
                     <a href="{% url 'usuarios' %}" class="nav_link">Usuario</a>
@@ -62,53 +57,49 @@
             </li>
 
 
-
         </ul>
     </nav>
-
+    
     <div class="content">
-
         <div class="input">
-            <a href="{% url 'crear_restaurantes' %}" class="additional-button">Crear Restaurante</a>
             <a href="{% url 'restaurantes' %}" class="additional-button">Listar Restaurantes</a>
         </div>
-
-        <div>
-            <h2>Lista de Restaurantes</h2>
-            <table class="table">
-                <thead>
+        
+        <h1>{{ restaurante.Nombre }}</h1>
+        
+        <h2>Menú del Restaurante</h2>
+    
+        <table class="table">
+            <thead>
+                <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Teléfono</th>
-                    <th>Dirección</th>
-                    <th>NRC</th>
-                    <th>Empleados</th>
-                    <th>Propietario</th>
-                </thead>
-                <tbody>
-                    {% for restaurante in restaurantes %}
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
                     <tr>
-                        <td>{{ restaurante.id }}</td>
-                        <td>{{ restaurante.Nombre }}</td>
-                        <td>{{ restaurante.Telefono }}</td>
-                        <td>{{ restaurante.Direccion }}</td>
-                        <td>{{ restaurante.NRC }}</td>
-                        <td>{{ restaurante.Empleados }}</td>
-                        <td>{{ restaurante.Propietario }}</td>
+                        <td>{{ producto.id }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.descripcion }}</td>
+                        <td>${{ producto.precio }}</td>
                         <td>
-                            <a href="{% url 'eliminar_restaurantes' restaurante.id %}" class="additional-button">Eliminar</a>
-                        </td>
-                        <td>
-                            <a href="{% url 'modificar_restaurantes' restaurante.id %}" class="additional-button">Modificar</a>
-                        </td>
-                        <td>
-                            <a href="{% url 'ver_menu_restaurante' restaurante.id %}" class="additional-button">Ver Menú</a>
+                          
                         </td>
                     </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    
+
+   
+       
+    
 
 
 </body>

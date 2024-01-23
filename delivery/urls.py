@@ -48,4 +48,8 @@ urlpatterns = [
     path('contabilidad/gastos/<int:id>/modificar_gastos/', views.modificar_gasto, name='modificar_gastos'),
     
     path('clientes/', views.clientes, name='clientes'),
+    
+    path('restaurantes/<int:id>/menu/', views.ver_menu_restaurante, name='ver_menu_restaurante')
+
+    
 ]
