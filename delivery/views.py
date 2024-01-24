@@ -31,7 +31,7 @@ def crear_usuario(request):
         else:
             print(form.errors)
 
-    return render(request, 'usuarios/crearusuarios.html', {'form': form})
+    return render(request, 'usuarios/crear_usuarios.html', {'form': form})
 
 def eliminar_usuarios(request, id):
     usuario = get_object_or_404(Usuario, id=id)
@@ -174,7 +174,7 @@ def ingresos(request):
     
     balance = total_ingresos - total_gastos
     
-    return render(request, 'contabilidad/ingreso/ingresos.html', {'ingresos': ingresos, 'hola_mundo': hola_mundo, 'total_ingresos': total_ingresos, 'balance': balance})
+    return render(request, 'contabilidad/ingreso/ingresos.html', {'ingresos': ingresos, 'total_gastos': total_gastos, 'hola_mundo': hola_mundo, 'total_ingresos': total_ingresos, 'balance': balance})
 
 def crear_ingreso(request):
     form = IngresoForm(request.POST or None)
