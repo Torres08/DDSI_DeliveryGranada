@@ -9,8 +9,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
 
-    <script src="{% static 'js/funcionalidad_clientes.js' %}"></script>
-
 </head>
 <body>
 
@@ -68,8 +66,6 @@
 
         <div class="input">
             <a href="{% url 'crear_gastos' %}" class="additional-button">Crear Gasto</a>
-            <a href="{% url 'modificar_gastos' %}" class="additional-button">Modificar Gasto</a>
-            <a href="{% url 'eliminar_gastos' %}" class="additional-button">Eliminar Gasto</a>
             <a href="{% url 'gastos' %}" class="additional-button">Listar Gastos</a>
         </div>
 
