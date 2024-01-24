@@ -9,8 +9,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
 
-    <script src="{% static 'js/funcionalidad_clientes.js' %}"></script>
-
 </head>
 <body>
 
@@ -67,8 +65,8 @@
     <div class="content">
 
         <div class="input">
-            <a href="{% url 'crear_usuarios' %}" class="additional-button">Crear Usuario</a>
-            <a href="{% url 'usuarios' %}" class="additional-button">Listar Usuario</a>
+            <a href="{% url 'crear_gastos' %}" class="additional-button">Crear Gasto</a>
+            <a href="{% url 'gastos' %}" class="additional-button">Listar Gastos</a>
         </div>
     
         <form method="post" action="">
@@ -76,9 +74,8 @@
             {{ form.as_p }}
             <button type="submit">Guardar Cambios</button>
         </form>
-        
-    <div>
-        
+
+    </div>
 
 
 </body>

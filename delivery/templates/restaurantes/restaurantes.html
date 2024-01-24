@@ -90,13 +90,13 @@
                         <td>{{ restaurante.Empleados }}</td>
                         <td>{{ restaurante.Propietario }}</td>
                         <td>
-                            <a href="{% url 'menu' restaurante.id %}" class="additional-button">Menú</a>
-                        </td>
-                        <td>
                             <a href="{% url 'eliminar_restaurantes' restaurante.id %}" class="additional-button">Eliminar</a>
                         </td>
                         <td>
                             <a href="{% url 'modificar_restaurantes' restaurante.id %}" class="additional-button">Modificar</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'ver_menu_restaurante' restaurante.id %}" class="additional-button">Ver Menú</a>
                         </td>
                     </tr>
                     {% endfor %}

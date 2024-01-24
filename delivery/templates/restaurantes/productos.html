@@ -8,8 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/body.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/barra_izquierda.css' %}">
-
-    <script src="{% static 'js/funcionalidad_clientes.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/listar_tabla.css' %}">
 
 </head>
 <body>
@@ -60,25 +59,14 @@
 
         </ul>
     </nav>
+    
+    <div class="content">
+    
+    </div>
+
+   
        
     
-    <!-- Contenido -->
-
-    <div class="content">
-
-        <div class="input">
-            <a href="{% url 'crear_usuarios' %}" class="additional-button">Crear Usuario</a>
-            <a href="{% url 'usuarios' %}" class="additional-button">Listar Usuario</a>
-        </div>
-    
-        <form method="post" action="">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Guardar Cambios</button>
-        </form>
-        
-    <div>
-        
 
 
 </body>

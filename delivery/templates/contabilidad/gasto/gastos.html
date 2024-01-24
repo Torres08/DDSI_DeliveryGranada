@@ -69,6 +69,9 @@
 
         <div>
             <h2>Lista de Gastos</h2>
+            <p>Total Ingresos: {{ total_ingresos }}</p>
+            <p>Total Gastos: {{ total_gastos }}</p>
+            <p>Beneficios: {{ balance }}</p>
             <table class="table">
                 <thead>
                     <th>ID</th>
@@ -84,7 +87,7 @@
                         <td>{{ gasto.Importe }}</td>
                         <td>{{ gasto.Fecha }}</td>
                         <td>{{ gasto.comentario }}</td>
-                        <td>{{ gasto.trabajador_id }}</td>
+                        <td>{{ gasto.employee_id }}</td>
                         <td>
                             <a href="{% url 'eliminar_gastos' gasto.id %}" class="additional-button">Eliminar</a>
                         </td>
