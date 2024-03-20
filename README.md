@@ -1,11 +1,11 @@
-Titulo: Delivery Granada
+# Delivery Granada
 
-Aplicacion de un Sistemas de Información en Bases de Datos
+## Aplicación de un Sistema de Información en Bases de Datos
 
-Descripción del sistema 
+### Descripción del sistema
 
-Nombre: DeliveryGranada 
-Idea Principal: Empresa de entrega de productos locales gastronómicos
+- **Nombre:** DeliveryGranada
+- **Idea Principal:** Empresa de entrega de productos locales gastronómicos
 
 La empresa DeliveryGranada gestiona la compra y entrega de productos comerciales locales a la puerta de los clientes. Los restaurantes, bares y establecimientos de comida locales pueden promocionar sus productos, bebidas, menús, platos y otros productos gastronómicos de manera económica con nuestro sistema.
 
@@ -16,3 +16,5 @@ DeliveryGranada se encarga de la gestión de pedidos, la atención al cliente, l
 En DeliveryGranada, nos esforzamos por conectar a los consumidores con los negocios locales y reconocemos la importancia de la responsabilidad ambiental. Para reducir la huella de carbono, nos esforzamos por utilizar embalajes eco amigables y optimizar las rutas de entrega.
 
 Asimismo, estamos desarrollando programas de fidelización que fomentan la lealtad hacia los comercios locales participantes y recompensan a nuestros clientes habituales. Estos programas incluyen acceso anticipado a nuevas ofertas gastronómicas, ofertas exclusivas y descuentos.
+
+Para saber más de la aplicacion lee el pdf: "Grupo 8 - DeliveryGranada"
